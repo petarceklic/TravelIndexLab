@@ -1,9 +1,25 @@
 import { NavBar } from "@/components/NavBar";
 import { TrendTable } from "@/components/TrendTable";
 import { DataHubTeaser } from "@/components/DataHubTeaser";
-import { mockCities } from "@/lib/data";
+import { supabase } from "@/lib/supabase";
+import { CityTrend } from "@/lib/data";
 
-export default function Home() {
+export default async function Home() {
+  const { data: rawCities } = await supabase
+    .from('city_trends')
+    .select('*')
+    .order('rank', { ascending: true });
+
+  const cities: CityTrend[] = (rawCities || []).map(city => ({
+    rank: city.rank,
+    city: city.city,
+    country: city.country,
+    trendDirection: city.trend_direction,
+    indexScore: city.index_score,
+    sparklineData: city.sparkline_data,
+    insight: city.insight
+  }));
+
   return (
     <div className="min-h-screen bg-vapor-grey flex flex-col font-sans">
       <NavBar />
@@ -23,7 +39,7 @@ export default function Home() {
           <h2 className="text-sm font-bold text-signal-coral uppercase tracking-wider mb-4 border-l-4 border-signal-coral pl-3">
             Rising Cities (Heatmap)
           </h2>
-          <TrendTable data={mockCities} />
+          <TrendTable data={cities} />
         </div>
       </main>
 
