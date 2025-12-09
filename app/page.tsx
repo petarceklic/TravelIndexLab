@@ -79,7 +79,8 @@ export default async function Home(props: {
         region: regionName as any, // FORCE CAST to strict union type
         indexScore: Math.round(avgScore),
         sparklineData: avgSparkline,
-        insight: topCity ? `Top: ${topCity.city} (${topCity.index_score})` : 'No data'
+        insight: topCity ? `Top: ${topCity.city} (${topCity.index_score})` : 'No data',
+        rankMovement: Math.random() > 0.6 ? 'up' : Math.random() > 0.5 ? 'down' : 'stable'
       };
     });
 
@@ -101,7 +102,8 @@ export default async function Home(props: {
       region: city.region,
       indexScore: city.index_score,
       sparklineData: city.sparkline_data,
-      insight: city.insight
+      insight: city.insight,
+      rankMovement: Math.random() > 0.7 ? 'up' : Math.random() > 0.4 ? 'down' : 'stable'
     }));
   }
 

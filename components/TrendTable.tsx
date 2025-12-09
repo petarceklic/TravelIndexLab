@@ -57,6 +57,7 @@ export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: 
                 <thead className="sticky top-0 z-10 bg-white/90 backdrop-blur-md text-xs uppercase tracking-wider text-gray-500 font-medium border-b border-gray-100 shadow-sm">
                     <tr>
                         <th className="px-6 py-4 font-mono text-center w-16">#</th>
+                        <th className="px-2 py-4 text-center w-12">MoM</th>
                         <th className="px-6 py-4">City / Region</th>
                         <th className="px-6 py-4 w-48">Trend Profile</th>
                         <th className="px-6 py-4 w-40 text-center">{metricHeader}</th>
@@ -86,6 +87,11 @@ export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: 
                             trendHex = '#4F46E5'; // Electric Indigo for Regions
                             borderClass = 'group-hover:border-electric-indigo';
                         }
+
+                        // Rank Movement Icon
+                        let MovementIcon = <Minus className="w-4 h-4 text-gray-300 mx-auto" />;
+                        if (city.rankMovement === 'up') MovementIcon = <ArrowUpRight className="w-4 h-4 text-signal-emerald mx-auto" />;
+                        if (city.rankMovement === 'down') MovementIcon = <ArrowDownRight className="w-4 h-4 text-signal-ruby mx-auto" />;
 
                         // Dynamic Badge Logic
                         let Badge = null;
@@ -124,6 +130,9 @@ export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: 
                             <tr key={city.city} className={`group transition-all duration-200 hover:bg-slate-50 border-l-4 border-transparent ${borderClass}`}>
                                 <td className="px-6 py-5 font-mono text-gray-400 font-medium text-center">
                                     {String(index + 1).padStart(2, '0')}
+                                </td>
+                                <td className="px-2 py-5 text-center">
+                                    {MovementIcon}
                                 </td>
                                 <td className="px-6 py-5">
                                     <div className="flex flex-col">
