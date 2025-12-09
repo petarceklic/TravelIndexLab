@@ -46,6 +46,9 @@ export default async function Home(props: {
     const regions: Record<string, any[]> = {};
 
     rawCities.forEach(city => {
+      // Skip if region is missing or null
+      if (!city.region) return;
+
       if (!regions[city.region]) regions[city.region] = [];
       regions[city.region].push(city);
     });
