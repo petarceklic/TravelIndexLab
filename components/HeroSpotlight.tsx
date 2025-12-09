@@ -23,11 +23,11 @@ export function HeroSpotlight({ activeTab, data }: HeroSpotlightProps) {
     } else if (activeTab === 'cooling') {
         title = "Value Opportunity";
         message = "Historical volume leaders are seeing a -15% crowd reduction this week.";
-        accentColor = "bg-red-50 border-red-100 text-red-800";
+        accentColor = "bg-deep-ocean/10 border-deep-ocean/20 text-deep-ocean";
     } else if (activeTab === 'established') {
-        title = "Stable Anchors";
+        title = "Classic Anchors";
         message = "These 5 hubs have maintained >90% booking volume retention year-over-year.";
-        accentColor = "bg-amber-50 border-amber-100 text-amber-800";
+        accentColor = "bg-slate-50 border-slate-100 text-slate-800";
     } else if (activeTab === 'regions') {
         const totalCities = data.reduce((acc, region) => acc + parseInt(region.country), 0);
         title = "Global Coverage";

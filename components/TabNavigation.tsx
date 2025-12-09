@@ -3,11 +3,10 @@
 import Link from "next/link";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import {
-    ChevronDown,
+ChevronDown,
     Flame,
-    Snowflake,
-    Anchor,
+    TrendingDown,
+    Landmark,
     Globe,
     Lock
 } from "lucide-react";
@@ -30,29 +29,29 @@ export function TabNavigation() {
                 Rising Cities
             </Link>
 
-            {/* Cooling */}
+            {/* Softening (was Cooling) */}
             <Link href="/?tab=cooling" className={cn(
                 "flex items-center gap-2 px-3 py-2 text-lg font-medium border-b-2 transition-all whitespace-nowrap",
                 currentTab === 'cooling'
-                    ? "border-signal-coral text-obsidian"
+                    ? "border-deep-ocean text-obsidian"
                     : "border-transparent text-gray-500 hover:text-obsidian hover:border-gray-200"
             )}>
-                <Snowflake className={cn("w-5 h-5", currentTab === 'cooling' ? "text-signal-coral fill-signal-coral" : "text-gray-400")} />
-                Cooling Cities
+                <TrendingDown className={cn("w-5 h-5", currentTab === 'cooling' ? "text-deep-ocean" : "text-gray-400")} />
+                Softening Cities
             </Link>
 
-            {/* Established */}
+            {/* Classic (was Established) */}
             <Link href="/?tab=established" className={cn(
                 "flex items-center gap-2 px-3 py-2 text-lg font-medium border-b-2 transition-all whitespace-nowrap",
                 currentTab === 'established'
-                    ? "border-amber-500 text-obsidian"
+                    ? "border-slate-500 text-obsidian"
                     : "border-transparent text-gray-500 hover:text-obsidian hover:border-gray-200"
             )}>
-                <Anchor className={cn("w-5 h-5", currentTab === 'established' ? "text-amber-500" : "text-gray-400")} />
-                Established Cities
+                <Landmark className={cn("w-5 h-5", currentTab === 'established' ? "text-slate-500" : "text-gray-400")} />
+                Classic Cities
             </Link>
 
-            {/* By Region (Aggregated View) */}
+            {/* Regional Index */}
             <Link href="/?tab=regions" className={cn(
                 "flex items-center gap-2 px-3 py-2 text-lg font-medium border-b-2 transition-all whitespace-nowrap",
                 currentTab === 'regions'
@@ -60,7 +59,7 @@ export function TabNavigation() {
                     : "border-transparent text-gray-500 hover:text-obsidian hover:border-gray-200"
             )}>
                 <Globe className={cn("w-5 h-5", currentTab === 'regions' ? "text-electric-indigo" : "text-gray-400")} />
-                By Region
+                Regional Index
             </Link>
 
             {/* Full Index (Upsell) */}

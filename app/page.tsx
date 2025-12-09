@@ -109,17 +109,17 @@ export default async function Home(props: {
   let listBorder = "border-signal-emerald";
 
   if (activeTab === 'cooling') {
-    listTitle = "Cooling Opportunities (Value)";
-    listDesc = "Popular destinations seeing a dip in crowds and prices.";
-    listColor = "text-signal-coral";
-    listBorder = "border-signal-coral";
+    listTitle = "Softening Cities (Value)";
+    listDesc = "Popular destinations seeing a dip in crowds and prices. Great for value seekers.";
+    listColor = "text-deep-ocean";
+    listBorder = "border-deep-ocean";
   } else if (activeTab === 'established') {
-    listTitle = "Established Anchors";
+    listTitle = "Classic Cities";
     listDesc = "High-volume, low-volatility global staples.";
-    listColor = "text-amber-500";
-    listBorder = "border-amber-500";
+    listColor = "text-slate-500";
+    listBorder = "border-slate-500";
   } else if (activeTab === 'regions') {
-    listTitle = "Regional Analysis";
+    listTitle = "Regional Index";
     listDesc = "Aggregated travel demand and momentum by global territory.";
     listColor = "text-electric-indigo";
     listBorder = "border-electric-indigo";

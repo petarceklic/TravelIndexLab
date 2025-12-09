@@ -65,17 +65,14 @@ export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: 
                 </thead>
                 <tbody className="divide-y divide-gray-50 bg-lab-white">
                     {data.map((city, index) => {
-                        const isRising = city.trendDirection === 'rising';
-                        const isCooling = city.trendDirection === 'cooling';
-                        // const isStable = city.trendDirection === 'stable'; // unused
-
                         // Force color override if in a specific tab context
                         let effectiveDirection = city.trendDirection;
                         if (activeTab === 'rising') effectiveDirection = 'rising';
                         if (activeTab === 'cooling') effectiveDirection = 'cooling';
 
-                        const trendHex = effectiveDirection === 'rising' ? '#10B981' : effectiveDirection === 'cooling' ? '#EF4444' : '#F59E0B';
-                        const borderClass = effectiveDirection === 'rising' ? 'group-hover:border-signal-emerald' : effectiveDirection === 'cooling' ? 'group-hover:border-signal-coral' : 'group-hover:border-amber-500';
+                        // Theme Colors: Rising=Emerald, Softening=DeepOcean, Classic=Slate
+                        const trendHex = effectiveDirection === 'rising' ? '#10B981' : effectiveDirection === 'cooling' ? '#0081A7' : '#64748B';
+                        const borderClass = effectiveDirection === 'rising' ? 'group-hover:border-signal-emerald' : effectiveDirection === 'cooling' ? 'group-hover:border-deep-ocean' : 'group-hover:border-slate-400';
 
                         // Dynamic Badge Logic
                         let Badge = null;
@@ -89,16 +86,16 @@ export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: 
                         } else if (activeTab === 'cooling') {
                             Badge = (
                                 <div className="flex flex-col items-center">
-                                    <span className="text-signal-coral font-bold text-lg">-{Math.floor(Math.random() * 15) + 5}%</span>
+                                    <span className="text-deep-ocean font-bold text-lg">-{Math.floor(Math.random() * 15) + 5}%</span>
                                     <span className="text-xs text-gray-400 font-medium uppercase">Price Drop</span>
                                 </div>
                             );
                         } else {
-                            // Established / Regions
+                            // Classic / Regions
                             Badge = (
                                 <div className="flex flex-col items-center">
-                                    <span className="text-amber-600 font-bold text-lg">High</span>
-                                    <span className="text-xs text-gray-400 font-medium uppercase">Volume</span>
+                                    <span className="text-slate-500 font-bold text-lg">High</span>
+                                    <span className="text-xs text-slate-400 font-medium uppercase">Volume</span>
                                 </div>
                             );
                         }
@@ -128,7 +125,7 @@ export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: 
                                 <td className="px-6 py-5 text-right">
                                     <span className={cn(
                                         "font-mono font-bold text-xl",
-                                        effectiveDirection === 'rising' ? 'text-signal-emerald' : effectiveDirection === 'cooling' ? 'text-signal-coral' : 'text-amber-600'
+                                        effectiveDirection === 'rising' ? 'text-signal-emerald' : effectiveDirection === 'cooling' ? 'text-deep-ocean' : 'text-slate-500'
                                     )}>
                                         {city.indexScore}
                                     </span>
