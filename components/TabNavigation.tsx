@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-ChevronDown,
+import {
+    ChevronDown,
     Flame,
     TrendingDown,
     Landmark,
