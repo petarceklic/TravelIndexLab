@@ -18,6 +18,7 @@ export interface CityTrend {
   sparklineData: number[];
   insight: string;
   rankMovement?: 'up' | 'down' | 'stable';
+  rankMovementValue?: number;
 }
 
 export const mockCities: CityTrend[] = [

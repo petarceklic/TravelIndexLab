@@ -70,6 +70,9 @@ export default async function Home(props: {
       // Find top trending city for insight
       const topCity = citiesInRegion.sort((a, b) => (b.index_score || 0) - (a.index_score || 0))[0];
 
+      const moveType = Math.random() > 0.6 ? 'up' : Math.random() > 0.5 ? 'down' : 'stable';
+      const moveValue = moveType === 'stable' ? 0 : Math.floor(Math.random() * 10) + 1;
+
       return {
         rank: index + 1,
         city: regionName, // Hijack 'city' field for Region Name
@@ -80,7 +83,8 @@ export default async function Home(props: {
         indexScore: Math.round(avgScore),
         sparklineData: avgSparkline,
         insight: topCity ? `Top: ${topCity.city} (${topCity.index_score})` : 'No data',
-        rankMovement: Math.random() > 0.6 ? 'up' : Math.random() > 0.5 ? 'down' : 'stable'
+        rankMovement: moveType as any,
+        rankMovementValue: moveValue
       };
     });
 
@@ -93,18 +97,24 @@ export default async function Home(props: {
 
   } else {
     // Normal City Mapping
-    displayData = (rawCities || []).map(city => ({
-      rank: city.rank,
-      city: city.city,
-      country: city.country,
-      trendDirection: city.trend_direction,
-      category: city.category,
-      region: city.region,
-      indexScore: city.index_score,
-      sparklineData: city.sparkline_data,
-      insight: city.insight,
-      rankMovement: Math.random() > 0.7 ? 'up' : Math.random() > 0.4 ? 'down' : 'stable'
-    }));
+    displayData = (rawCities || []).map(city => {
+      const moveType = Math.random() > 0.7 ? 'up' : Math.random() > 0.4 ? 'down' : 'stable';
+      const moveValue = moveType === 'stable' ? 0 : Math.floor(Math.random() * 10) + 1;
+
+      return {
+        rank: city.rank,
+        city: city.city,
+        country: city.country,
+        trendDirection: city.trend_direction,
+        category: city.category,
+        region: city.region,
+        indexScore: city.index_score,
+        sparklineData: city.sparkline_data,
+        insight: city.insight,
+        rankMovement: moveType as any,
+        rankMovementValue: moveValue
+      };
+    });
   }
 
   // Dynamic Header Text
