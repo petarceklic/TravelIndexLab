@@ -144,12 +144,12 @@ export default async function Home(props: {
         </div>
 
         <div className="mb-12">
+          <div className={cn("mb-6 border-l-4 pl-4 transition-colors", listBorder)}>
+            <p className="text-lg text-gray-700 font-medium leading-relaxed">{listDesc}</p>
+          </div>
+
           {/* Hero Spotlight */}
           <HeroSpotlight activeTab={activeTab} data={displayData} />
-
-          <div className={cn("mb-4 border-l-4 pl-3 transition-colors", listBorder)}>
-            <p className="text-sm text-gray-500 font-medium">{listDesc}</p>
-          </div>
 
           <TrendTable data={displayData} activeTab={activeTab} />
         </div>
