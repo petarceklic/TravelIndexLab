@@ -65,7 +65,7 @@ export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: 
                         <th className="px-6 py-4 hidden md:table-cell">Key Insight</th>
                     </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100 bg-lab-white">
+                <tbody className="divide-y divide-gray-200 bg-lab-white">
                     {data.map((city, index) => {
                         // Force color override if in a specific tab context
                         let effectiveDirection = city.trendDirection;
