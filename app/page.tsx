@@ -23,23 +23,23 @@ export default async function Home(props: {
     .select('*')
     .order('rank', { ascending: true });
 
-  // Filter by Tab (Category)
+  // Filter logic
+  let isRegionTab = false;
+
   if (activeTab === 'rising') {
     query = query.eq('category', 'rising');
   } else if (activeTab === 'cooling') {
     query = query.eq('category', 'cooling');
   } else if (activeTab === 'established') {
-    // For established, we might want stable trends or explicit category
     query = query.eq('category', 'established');
-  }
-
-  // Filter by Region
-  if (activeRegion) {
-    query = query.eq('region', activeRegion);
+  } else {
+    // Assume it's a region
+    isRegionTab = true;
+    query = query.eq('region', activeTab);
   }
 
   const { data: rawCities } = await query;
-
+  // ... mapping logic remains the same ...
   const cities: CityTrend[] = (rawCities || []).map(city => ({
     rank: city.rank,
     city: city.city,
@@ -68,6 +68,11 @@ export default async function Home(props: {
     listDesc = "High-volume, low-volatility global staples.";
     listColor = "text-amber-500";
     listBorder = "border-amber-500";
+  } else if (isRegionTab) {
+    listTitle = `${activeTab} Region`;
+    listDesc = `Top trending destinations across ${activeTab}.`;
+    listColor = "text-electric-indigo";
+    listBorder = "border-electric-indigo";
   }
 
   return (

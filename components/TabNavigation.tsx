@@ -14,21 +14,7 @@ import {
 
 export function TabNavigation() {
     const searchParams = useSearchParams();
-    const router = useRouter();
-    const pathname = usePathname();
-
     const currentTab = searchParams.get('tab') || 'rising';
-    const currentRegion = searchParams.get('region');
-
-    const handleRegionChange = (region: string) => {
-        const params = new URLSearchParams(searchParams);
-        if (region) {
-            params.set('region', region);
-        } else {
-            params.delete('region');
-        }
-        router.push(`${pathname}?${params.toString()}`);
-    };
 
     return (
         <div className="flex items-center gap-1 sm:gap-6 overflow-x-auto no-scrollbar py-2">
@@ -66,47 +52,26 @@ export function TabNavigation() {
                 Established
             </Link>
 
-            {/* Region Filter */}
-            <div className="relative group ml-2 sm:ml-4">
-                <button className={cn(
-                    "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border transition-all",
-                    currentRegion
-                        ? "bg-vapor-grey border-obsidian text-obsidian"
-                        : "bg-white border-gray-200 text-gray-500 hover:border-gray-300"
-                )}>
-                    <Globe className="w-3.5 h-3.5" />
-                    {currentRegion || "By Region"}
-                    <ChevronDown className="w-3.5 h-3.5 opacity-50" />
-                </button>
+            <div className="w-px h-6 bg-gray-200 mx-2 hidden sm:block"></div>
 
-                {/* Dropdown Menu */}
-                <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-100 p-1 hidden group-hover:block z-50 animate-in fade-in zoom-in-95 duration-200">
-                    <div className="text-xs font-semibold text-gray-400 px-3 py-2 uppercase tracking-wider">Select Region</div>
-                    {['Asia-Pacific', 'Europe', 'Americas', 'Middle East/Africa'].map(region => (
-                        <div
-                            key={region}
-                            onClick={() => handleRegionChange(region)}
-                            className={cn(
-                                "px-3 py-2 text-sm rounded-md cursor-pointer hover:bg-vapor-grey transition-colors",
-                                currentRegion === region ? "text-electric-indigo font-medium bg-indigo-50" : "text-gray-600"
-                            )}
-                        >
-                            {region}
-                        </div>
-                    ))}
-                    {currentRegion && (
-                        <div
-                            onClick={() => handleRegionChange("")}
-                            className="border-t border-gray-100 mt-1 pt-1 px-3 py-2 text-xs text-red-500 cursor-pointer hover:bg-red-50 rounded-md text-center"
-                        >
-                            Clear Filter
-                        </div>
+            {/* Regions Flattened */}
+            {['Europe', 'Asia-Pacific', 'Americas', 'Middle East/Africa'].map(region => (
+                <Link
+                    key={region}
+                    href={`/?tab=${region}`} // Treat region as a tab
+                    className={cn(
+                        "flex items-center gap-1.5 px-3 py-2 text-sm font-medium border-b-2 transition-all whitespace-nowrap",
+                        currentTab === region
+                            ? "border-electric-indigo text-electric-indigo"
+                            : "border-transparent text-gray-500 hover:text-obsidian hover:border-gray-200"
                     )}
-                </div>
-            </div>
+                >
+                    {region === 'Middle East/Africa' ? 'ME/Africa' : region}
+                </Link>
+            ))}
 
             {/* Full Index (Upsell) */}
-            <button className="flex items-center gap-1.5 px-3 py-1.5 ml-2 sm:ml-4 text-xs font-bold text-electric-indigo bg-indigo-50 border border-indigo-100 rounded-md hover:bg-indigo-100 transition-colors">
+            <button className="flex items-center gap-1.5 px-3 py-1.5 ml-auto sm:ml-4 text-xs font-bold text-electric-indigo bg-indigo-50 border border-indigo-100 rounded-md hover:bg-indigo-100 transition-colors whitespace-nowrap">
                 <Lock className="w-3 h-3" />
                 Full Index
             </button>
