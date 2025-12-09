@@ -65,7 +65,7 @@ export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: 
                         <th className="px-6 py-4 hidden md:table-cell">Key Insight</th>
                     </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200 bg-lab-white">
+                <tbody className="bg-lab-white">
                     {data.map((city, index) => {
                         // Force color override if in a specific tab context
                         let effectiveDirection = city.trendDirection;
@@ -75,17 +75,17 @@ export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: 
 
                         // Theme Colors: Rising=Emerald, Softening=DeepOcean, Classic=Slate, Regions=Indigo
                         let trendHex = '#64748B'; // Default Slate
-                        let borderClass = 'group-hover:border-slate-400';
+                        let borderClass = 'group-hover:border-l-slate-400';
 
                         if (effectiveDirection === 'rising') {
                             trendHex = '#10B981';
-                            borderClass = 'group-hover:border-signal-emerald';
+                            borderClass = 'group-hover:border-l-signal-emerald';
                         } else if (effectiveDirection === 'cooling') {
                             trendHex = '#0081A7';
-                            borderClass = 'group-hover:border-deep-ocean';
+                            borderClass = 'group-hover:border-l-deep-ocean';
                         } else if (activeTab === 'regions') {
                             trendHex = '#4F46E5'; // Electric Indigo for Regions
-                            borderClass = 'group-hover:border-electric-indigo';
+                            borderClass = 'group-hover:border-l-electric-indigo';
                         }
 
                         // Rank Movement Icon & Number
@@ -147,7 +147,7 @@ export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: 
                         }
 
                         return (
-                            <tr key={city.city} className={`group transition-all duration-200 hover:bg-slate-50 border-l-4 border-transparent ${borderClass}`}>
+                            <tr key={city.city} className={`group transition-all duration-200 hover:bg-slate-50 border-l-4 border-l-transparent border-b border-gray-200 ${borderClass}`}>
                                 <td className="px-6 py-5 font-mono text-gray-400 font-medium text-center">
                                     {String(index + 1).padStart(2, '0')}
                                 </td>
