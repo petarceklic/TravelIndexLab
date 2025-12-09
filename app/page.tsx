@@ -24,7 +24,7 @@ export default async function Home(props: {
     .order('rank', { ascending: true });
 
   // Filter logic
-  let isRegionTab = false;
+  let isRegionView = false;
 
   if (activeTab === 'rising') {
     query = query.eq('category', 'rising');
@@ -32,25 +32,72 @@ export default async function Home(props: {
     query = query.eq('category', 'cooling');
   } else if (activeTab === 'established') {
     query = query.eq('category', 'established');
-  } else {
-    // Assume it's a region
-    isRegionTab = true;
-    query = query.eq('region', activeTab);
+  } else if (activeTab === 'regions') {
+    isRegionView = true;
+    // Fetch ALL for aggregation
   }
 
   const { data: rawCities } = await query;
-  // ... mapping logic remains the same ...
-  const cities: CityTrend[] = (rawCities || []).map(city => ({
-    rank: city.rank,
-    city: city.city,
-    country: city.country,
-    trendDirection: city.trend_direction,
-    category: city.category,
-    region: city.region,
-    indexScore: city.index_score,
-    sparklineData: city.sparkline_data,
-    insight: city.insight
-  }));
+  let displayData: CityTrend[] = [];
+
+  if (isRegionView && rawCities) {
+    // Aggregate by Region
+    const regions: Record<string, CityTrend[]> = {};
+
+    rawCities.forEach(city => {
+      if (!regions[city.region]) regions[city.region] = [];
+      regions[city.region].push(city);
+    });
+
+    displayData = Object.entries(regions).map(([regionName, citiesInRegion], index) => {
+      // Calculate aggregates
+      const count = citiesInRegion.length;
+      const avgScore = citiesInRegion.reduce((sum, c) => sum + c.index_score, 0) / count;
+
+      // Create a composite sparkline (average of all cities)
+      const sparklineLength = citiesInRegion[0]?.sparkline_data.length || 6;
+      const avgSparkline = Array.from({ length: sparklineLength }, (_, i) => {
+        const sumAtPoint = citiesInRegion.reduce((sum, c) => sum + (c.sparkline_data[i] || 0), 0);
+        return Math.round(sumAtPoint / count);
+      });
+
+      // Find top trending city for insight
+      const topCity = citiesInRegion.sort((a, b) => b.index_score - a.index_score)[0];
+
+      return {
+        rank: index + 1,
+        city: regionName, // Hijack 'city' field for Region Name
+        country: `${count} Active Cities`, // Hijack 'country' for Count
+        trendDirection: 'stable', // Default for region unless we calc it
+        category: 'established', // Use established color scheme
+        region: regionName,
+        indexScore: Math.round(avgScore),
+        sparklineData: avgSparkline,
+        insight: `Top: ${topCity.city} (${topCity.index_score})`
+      };
+    });
+
+    // Sort regions by city count or avg score? Let's do Count then Score
+    displayData.sort((a, b) => {
+      const countA = parseInt(a.country);
+      const countB = parseInt(b.country);
+      return countB - countA || b.indexScore - a.indexScore;
+    });
+
+  } else {
+    // Normal City Mapping
+    displayData = (rawCities || []).map(city => ({
+      rank: city.rank,
+      city: city.city,
+      country: city.country,
+      trendDirection: city.trend_direction,
+      category: city.category,
+      region: city.region,
+      indexScore: city.index_score,
+      sparklineData: city.sparkline_data,
+      insight: city.insight
+    }));
+  }
 
   // Dynamic Header Text
   let listTitle = "Rising Cities (Heatmap)";
@@ -68,9 +115,9 @@ export default async function Home(props: {
     listDesc = "High-volume, low-volatility global staples.";
     listColor = "text-amber-500";
     listBorder = "border-amber-500";
-  } else if (isRegionTab) {
-    listTitle = `${activeTab} Region`;
-    listDesc = `Top trending destinations across ${activeTab}.`;
+  } else if (activeTab === 'regions') {
+    listTitle = "Regional Analysis";
+    listDesc = "Aggregated travel demand and momentum by global territory.";
     listColor = "text-electric-indigo";
     listBorder = "border-electric-indigo";
   }
@@ -101,7 +148,7 @@ export default async function Home(props: {
             <p className="text-xs text-gray-500 pl-4">{listDesc}</p>
           </div>
 
-          <TrendTable data={cities} activeTab={activeTab} />
+          <TrendTable data={displayData} activeTab={activeTab} />
         </div>
       </main>
 

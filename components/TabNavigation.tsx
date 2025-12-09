@@ -54,21 +54,16 @@ export function TabNavigation() {
 
             <div className="w-px h-6 bg-gray-200 mx-2 hidden sm:block"></div>
 
-            {/* Regions Flattened */}
-            {['Europe', 'Asia-Pacific', 'Americas', 'Middle East/Africa'].map(region => (
-                <Link
-                    key={region}
-                    href={`/?tab=${region}`} // Treat region as a tab
-                    className={cn(
-                        "flex items-center gap-1.5 px-3 py-2 text-sm font-medium border-b-2 transition-all whitespace-nowrap",
-                        currentTab === region
-                            ? "border-electric-indigo text-electric-indigo"
-                            : "border-transparent text-gray-500 hover:text-obsidian hover:border-gray-200"
-                    )}
-                >
-                    {region === 'Middle East/Africa' ? 'ME/Africa' : region}
-                </Link>
-            ))}
+            {/* By Region (Aggregated View) */}
+            <Link href="/?tab=regions" className={cn(
+                "flex items-center gap-1.5 px-3 py-2 text-sm font-medium border-b-2 transition-all whitespace-nowrap",
+                currentTab === 'regions'
+                    ? "border-electric-indigo text-electric-indigo"
+                    : "border-transparent text-gray-500 hover:text-obsidian hover:border-gray-200"
+            )}>
+                <Globe className={cn("w-4 h-4", currentTab === 'regions' ? "text-electric-indigo" : "text-gray-400")} />
+                By Region
+            </Link>
 
             {/* Full Index (Upsell) */}
             <button className="flex items-center gap-1.5 px-3 py-1.5 ml-auto sm:ml-4 text-xs font-bold text-electric-indigo bg-indigo-50 border border-indigo-100 rounded-md hover:bg-indigo-100 transition-colors whitespace-nowrap">
