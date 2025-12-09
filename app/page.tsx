@@ -1,6 +1,7 @@
 import { NavBar } from "@/components/NavBar";
 import { TrendTable } from "@/components/TrendTable";
 import { DataHubTeaser } from "@/components/DataHubTeaser";
+import { TabNavigation } from "@/components/TabNavigation";
 import { supabase } from "@/lib/supabase";
 import { CityTrend } from "@/lib/data";
 import { cn } from "@/lib/utils";
@@ -78,10 +79,13 @@ export default async function Home(props: {
           <h1 className="text-3xl font-bold text-obsidian tracking-tight mb-2">
             Global Signal Index
           </h1>
-          <p className="text-gray-500 max-w-2xl">
+          <p className="text-gray-500 max-w-2xl mb-6">
             Real-time tracking of travel intent, social velocity, and booking volume.
             Updated hourly.
           </p>
+
+          {/* Tabs moved here */}
+          <TabNavigation />
         </div>
 
         <div className="mb-12">
