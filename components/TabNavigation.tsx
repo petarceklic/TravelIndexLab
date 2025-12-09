@@ -23,10 +23,10 @@ export function TabNavigation() {
             <Link href="/?tab=rising" className={cn(
                 "flex items-center gap-2 px-3 py-2 text-lg font-medium border-b-2 transition-all whitespace-nowrap",
                 currentTab === 'rising'
-                    ? "border-signal-coral text-obsidian"
+                    ? "border-signal-emerald text-obsidian"
                     : "border-transparent text-gray-500 hover:text-obsidian hover:border-gray-200"
             )}>
-                <Flame className={cn("w-5 h-5", currentTab === 'rising' ? "text-signal-coral fill-signal-coral" : "text-gray-400")} />
+                <Flame className={cn("w-5 h-5", currentTab === 'rising' ? "text-signal-emerald fill-signal-emerald" : "text-gray-400")} />
                 Rising Cities
             </Link>
 
@@ -34,10 +34,10 @@ export function TabNavigation() {
             <Link href="/?tab=cooling" className={cn(
                 "flex items-center gap-2 px-3 py-2 text-lg font-medium border-b-2 transition-all whitespace-nowrap",
                 currentTab === 'cooling'
-                    ? "border-deep-ocean text-obsidian"
+                    ? "border-signal-coral text-obsidian"
                     : "border-transparent text-gray-500 hover:text-obsidian hover:border-gray-200"
             )}>
-                <Snowflake className={cn("w-5 h-5", currentTab === 'cooling' ? "text-deep-ocean fill-deep-ocean" : "text-gray-400")} />
+                <Snowflake className={cn("w-5 h-5", currentTab === 'cooling' ? "text-signal-coral fill-signal-coral" : "text-gray-400")} />
                 Cooling Cities
             </Link>
 

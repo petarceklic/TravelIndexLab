@@ -74,22 +74,22 @@ export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: 
                         if (activeTab === 'rising') effectiveDirection = 'rising';
                         if (activeTab === 'cooling') effectiveDirection = 'cooling';
 
-                        const trendHex = effectiveDirection === 'rising' ? '#FF6B6B' : effectiveDirection === 'cooling' ? '#0081A7' : '#F59E0B';
-                        const borderClass = effectiveDirection === 'rising' ? 'group-hover:border-signal-coral' : effectiveDirection === 'cooling' ? 'group-hover:border-deep-ocean' : 'group-hover:border-amber-500';
+                        const trendHex = effectiveDirection === 'rising' ? '#10B981' : effectiveDirection === 'cooling' ? '#EF4444' : '#F59E0B';
+                        const borderClass = effectiveDirection === 'rising' ? 'group-hover:border-signal-emerald' : effectiveDirection === 'cooling' ? 'group-hover:border-signal-coral' : 'group-hover:border-amber-500';
 
                         // Dynamic Badge Logic
                         let Badge = null;
                         if (activeTab === 'rising') {
                             Badge = (
                                 <div className="flex flex-col items-center">
-                                    <span className="text-signal-coral font-bold text-lg">+{Math.floor(Math.random() * 20) + 12}%</span>
+                                    <span className="text-signal-emerald font-bold text-lg">+{Math.floor(Math.random() * 20) + 12}%</span>
                                     <span className="text-xs text-gray-400 font-medium uppercase">MoM</span>
                                 </div>
                             );
                         } else if (activeTab === 'cooling') {
                             Badge = (
                                 <div className="flex flex-col items-center">
-                                    <span className="text-deep-ocean font-bold text-lg">-{Math.floor(Math.random() * 15) + 5}%</span>
+                                    <span className="text-signal-coral font-bold text-lg">-{Math.floor(Math.random() * 15) + 5}%</span>
                                     <span className="text-xs text-gray-400 font-medium uppercase">Price Drop</span>
                                 </div>
                             );
@@ -128,7 +128,7 @@ export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: 
                                 <td className="px-6 py-5 text-right">
                                     <span className={cn(
                                         "font-mono font-bold text-xl",
-                                        effectiveDirection === 'rising' ? 'text-signal-coral' : effectiveDirection === 'cooling' ? 'text-deep-ocean' : 'text-amber-600'
+                                        effectiveDirection === 'rising' ? 'text-signal-emerald' : effectiveDirection === 'cooling' ? 'text-signal-coral' : 'text-amber-600'
                                     )}>
                                         {city.indexScore}
                                     </span>

@@ -42,10 +42,27 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
   /* TravelIndexLab Signal System */
+  /* TravelIndexLab Signal System */
   --color-lab-white: #FFFFFF;
   --color-vapor-grey: #F8F9FA;
   --color-obsidian: #111827;
-  --color-signal-coral: #FF6B6B;
+  --color-signal-emerald: #10B981;
+  /* Rising Green */
+  --color-signal-coral: #EF4444;
+  /* Cooling Red (Re-purposed or actually used for cooling now?) User said Cooling should be RED. Rising Green. */
+  /* Wait, user said: "red elements in Rising table should be green". currently Rising is Red (coral). 
+     "and red in the table for Cooling". currently Cooling Is blue.
+     So Rising -> Green. Cooling -> Red. 
+     I will define 'signal-emerald' for Green.
+     I will keep 'signal-coral' but maybe make it redder if needed, or just use a new 'signal-ruby' for red?
+     Actually, looking at previous code, 'signal-coral' was #FF6B6B (Light Red).
+     I'll redefine:
+     --color-signal-emerald: #10B981;
+     --color-signal-ruby: #EF4444;
+     And keep deep-ocean for neutral/cooling blue if needed, but user said "Red for cooling".
+  */
+  --color-signal-emerald: #10B981;
+  --color-signal-ruby: #EF4444;
   --color-deep-ocean: #0081A7;
   --color-electric-indigo: #4F46E5;
 }
@@ -123,6 +140,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }

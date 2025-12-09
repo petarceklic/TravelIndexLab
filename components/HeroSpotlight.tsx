@@ -19,11 +19,11 @@ export function HeroSpotlight({ activeTab, data }: HeroSpotlightProps) {
         const topCities = data.slice(0, 3).map(c => c.city).join(", ");
         title = "Market Velocity";
         message = `3 Cities (${topCities}) are showing exponential social growth today.`;
-        accentColor = "bg-orange-50 border-orange-100 text-orange-800";
+        accentColor = "bg-emerald-50 border-emerald-100 text-emerald-800";
     } else if (activeTab === 'cooling') {
         title = "Value Opportunity";
         message = "Historical volume leaders are seeing a -15% crowd reduction this week.";
-        accentColor = "bg-blue-50 border-blue-100 text-blue-800";
+        accentColor = "bg-red-50 border-red-100 text-red-800";
     } else if (activeTab === 'established') {
         title = "Stable Anchors";
         message = "These 5 hubs have maintained >90% booking volume retention year-over-year.";

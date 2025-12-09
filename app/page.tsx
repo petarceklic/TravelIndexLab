@@ -105,14 +105,14 @@ export default async function Home(props: {
   // Dynamic Header Text
   let listTitle = "Rising Cities (Heatmap)";
   let listDesc = "Cities with the highest positive momentum score this month.";
-  let listColor = "text-signal-coral";
-  let listBorder = "border-signal-coral";
+  let listColor = "text-signal-emerald";
+  let listBorder = "border-signal-emerald";
 
   if (activeTab === 'cooling') {
     listTitle = "Cooling Opportunities (Value)";
     listDesc = "Popular destinations seeing a dip in crowds and prices.";
-    listColor = "text-deep-ocean";
-    listBorder = "border-deep-ocean";
+    listColor = "text-signal-coral";
+    listBorder = "border-signal-coral";
   } else if (activeTab === 'established') {
     listTitle = "Established Anchors";
     listDesc = "High-volume, low-volatility global staples.";
