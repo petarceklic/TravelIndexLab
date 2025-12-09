@@ -143,11 +143,8 @@ export default async function Home(props: {
         </div>
 
         <div className="mb-12">
-          <div className="mb-4">
-            <h2 className={cn("text-sm font-bold uppercase tracking-wider mb-1 border-l-4 pl-3 transition-colors", listColor, listBorder)}>
-              {listTitle}
-            </h2>
-            <p className="text-xs text-gray-500 pl-4">{listDesc}</p>
+          <div className={cn("mb-4 border-l-4 pl-3 transition-colors", listBorder)}>
+            <p className="text-sm text-gray-500 font-medium">{listDesc}</p>
           </div>
 
           <TrendTable data={displayData} activeTab={activeTab} />

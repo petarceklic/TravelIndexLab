@@ -21,47 +21,45 @@ export function TabNavigation() {
 
             {/* Rising */}
             <Link href="/?tab=rising" className={cn(
-                "flex items-center gap-1.5 px-3 py-2 text-sm font-medium border-b-2 transition-all whitespace-nowrap",
+                "flex items-center gap-2 px-3 py-2 text-lg font-medium border-b-2 transition-all whitespace-nowrap",
                 currentTab === 'rising'
                     ? "border-signal-coral text-obsidian"
                     : "border-transparent text-gray-500 hover:text-obsidian hover:border-gray-200"
             )}>
-                <Flame className={cn("w-4 h-4", currentTab === 'rising' ? "text-signal-coral fill-signal-coral" : "text-gray-400")} />
-                Rising
+                <Flame className={cn("w-5 h-5", currentTab === 'rising' ? "text-signal-coral fill-signal-coral" : "text-gray-400")} />
+                Rising Cities
             </Link>
 
             {/* Cooling */}
             <Link href="/?tab=cooling" className={cn(
-                "flex items-center gap-1.5 px-3 py-2 text-sm font-medium border-b-2 transition-all whitespace-nowrap",
+                "flex items-center gap-2 px-3 py-2 text-lg font-medium border-b-2 transition-all whitespace-nowrap",
                 currentTab === 'cooling'
                     ? "border-deep-ocean text-obsidian"
                     : "border-transparent text-gray-500 hover:text-obsidian hover:border-gray-200"
             )}>
-                <Snowflake className={cn("w-4 h-4", currentTab === 'cooling' ? "text-deep-ocean fill-deep-ocean" : "text-gray-400")} />
-                Cooling
+                <Snowflake className={cn("w-5 h-5", currentTab === 'cooling' ? "text-deep-ocean fill-deep-ocean" : "text-gray-400")} />
+                Cooling Cities
             </Link>
 
             {/* Established */}
             <Link href="/?tab=established" className={cn(
-                "flex items-center gap-1.5 px-3 py-2 text-sm font-medium border-b-2 transition-all whitespace-nowrap",
+                "flex items-center gap-2 px-3 py-2 text-lg font-medium border-b-2 transition-all whitespace-nowrap",
                 currentTab === 'established'
                     ? "border-amber-500 text-obsidian"
                     : "border-transparent text-gray-500 hover:text-obsidian hover:border-gray-200"
             )}>
-                <Anchor className={cn("w-4 h-4", currentTab === 'established' ? "text-amber-500" : "text-gray-400")} />
-                Established
+                <Anchor className={cn("w-5 h-5", currentTab === 'established' ? "text-amber-500" : "text-gray-400")} />
+                Established Cities
             </Link>
-
-            <div className="w-px h-6 bg-gray-200 mx-2 hidden sm:block"></div>
 
             {/* By Region (Aggregated View) */}
             <Link href="/?tab=regions" className={cn(
-                "flex items-center gap-1.5 px-3 py-2 text-sm font-medium border-b-2 transition-all whitespace-nowrap",
+                "flex items-center gap-2 px-3 py-2 text-lg font-medium border-b-2 transition-all whitespace-nowrap",
                 currentTab === 'regions'
                     ? "border-electric-indigo text-electric-indigo"
                     : "border-transparent text-gray-500 hover:text-obsidian hover:border-gray-200"
             )}>
-                <Globe className={cn("w-4 h-4", currentTab === 'regions' ? "text-electric-indigo" : "text-gray-400")} />
+                <Globe className={cn("w-5 h-5", currentTab === 'regions' ? "text-electric-indigo" : "text-gray-400")} />
                 By Region
             </Link>
 
