@@ -51,9 +51,9 @@ export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: 
     if (activeTab === 'established') metricHeader = "Volume Stability";
 
     return (
-        <div className="w-full overflow-x-auto bg-lab-white rounded-lg shadow-sm border border-gray-100">
+        <div className="w-full overflow-x-auto bg-lab-white rounded-lg shadow-sm border border-gray-100 relative">
             <table className="w-full text-left border-collapse">
-                <thead className="bg-vapor-grey text-xs uppercase tracking-wider text-gray-500 font-medium">
+                <thead className="sticky top-0 z-10 bg-white/90 backdrop-blur-md text-xs uppercase tracking-wider text-gray-500 font-medium border-b border-gray-100 shadow-sm">
                     <tr>
                         <th className="px-6 py-4 font-mono text-center w-16">#</th>
                         <th className="px-6 py-4">City</th>
@@ -64,54 +64,61 @@ export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: 
                     </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-50 bg-lab-white">
-                    {data.map((city) => {
+                    {data.map((city, index) => {
                         const isRising = city.trendDirection === 'rising';
                         const isCooling = city.trendDirection === 'cooling';
-                        const isStable = city.trendDirection === 'stable';
+                        // const isStable = city.trendDirection === 'stable'; // unused
 
-                        const trendHex = isRising ? '#FF6B6B' : isCooling ? '#0081A7' : '#F59E0B'; // Amber for stable
+                        // Force color override if in a specific tab context
+                        let effectiveDirection = city.trendDirection;
+                        if (activeTab === 'rising') effectiveDirection = 'rising';
+                        if (activeTab === 'cooling') effectiveDirection = 'cooling';
+
+                        const trendHex = effectiveDirection === 'rising' ? '#FF6B6B' : effectiveDirection === 'cooling' ? '#0081A7' : '#F59E0B';
+                        const borderClass = effectiveDirection === 'rising' ? 'group-hover:border-signal-coral' : effectiveDirection === 'cooling' ? 'group-hover:border-deep-ocean' : 'group-hover:border-amber-500';
 
                         // Dynamic Badge Logic
                         let Badge = null;
                         if (activeTab === 'rising') {
                             Badge = (
-                                <div className="flex items-center justify-center gap-1 font-mono text-xs font-bold text-signal-coral bg-red-50 px-2 py-1 rounded-full">
-                                    <ArrowUpRight className="w-3 h-3" />
-                                    +{Math.floor(Math.random() * 40) + 10}%
+                                <div className="flex flex-col items-center">
+                                    <span className="text-signal-coral font-bold text-lg">+{Math.floor(Math.random() * 20) + 12}%</span>
+                                    <span className="text-xs text-gray-400 font-medium uppercase">MoM</span>
                                 </div>
                             );
                         } else if (activeTab === 'cooling') {
                             Badge = (
-                                <div className="flex items-center justify-center gap-1 font-mono text-xs font-bold text-deep-ocean bg-blue-50 px-2 py-1 rounded-full">
-                                    <ArrowDownRight className="w-3 h-3" />
-                                    -{Math.floor(Math.random() * 30) + 5}%
+                                <div className="flex flex-col items-center">
+                                    <span className="text-deep-ocean font-bold text-lg">-{Math.floor(Math.random() * 15) + 5}%</span>
+                                    <span className="text-xs text-gray-400 font-medium uppercase">Price Drop</span>
                                 </div>
                             );
                         } else {
+                            // Established / Regions
                             Badge = (
-                                <div className="flex items-center justify-center gap-1 font-mono text-xs font-bold text-amber-600 bg-amber-50 px-2 py-1 rounded-full">
-                                    <Minus className="w-3 h-3" />
-                                    HIGH
+                                <div className="flex flex-col items-center">
+                                    <span className="text-amber-600 font-bold text-lg">High</span>
+                                    <span className="text-xs text-gray-400 font-medium uppercase">Volume</span>
                                 </div>
                             );
                         }
 
                         return (
-                            <tr key={city.city} className="hover:bg-vapor-grey/50 transition-colors group">
+                            <tr key={city.city} className={`group transition-all duration-200 hover:bg-slate-50 border-l-4 border-transparent ${borderClass}`}>
                                 <td className="px-6 py-5 font-mono text-gray-400 font-medium text-center">
-                                    {String(city.rank).padStart(2, '0')}
+                                    {String(index + 1).padStart(2, '0')}
                                 </td>
                                 <td className="px-6 py-5">
                                     <div className="flex flex-col">
                                         <div className="flex items-center gap-2">
-                                            <span className="font-bold text-obsidian text-lg">{city.city}</span>
+                                            <span className="font-bold text-obsidian text-lg group-hover:text-electric-indigo transition-colors">{city.city}</span>
                                             {/* Mobile Insight Badge could go here */}
                                         </div>
-                                        <span className="text-sm text-gray-500">{city.country}</span>
+                                        <span className="text-sm text-gray-500 font-medium">{city.country}</span>
                                     </div>
                                 </td>
                                 <td className="px-6 py-5">
-                                    <div className="w-32 h-8">
+                                    <div className="w-32 h-8 opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all">
                                         <Sparkline data={city.sparklineData} color={trendHex} />
                                     </div>
                                 </td>
@@ -121,18 +128,14 @@ export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: 
                                 <td className="px-6 py-5 text-right">
                                     <span className={cn(
                                         "font-mono font-bold text-xl",
-                                        isRising ? 'text-signal-coral' : isCooling ? 'text-deep-ocean' : 'text-amber-600'
+                                        effectiveDirection === 'rising' ? 'text-signal-coral' : effectiveDirection === 'cooling' ? 'text-deep-ocean' : 'text-amber-600'
                                     )}>
                                         {city.indexScore}
                                     </span>
                                 </td>
                                 <td className="px-6 py-5 text-sm text-gray-600 max-w-sm hidden md:table-cell">
                                     <div className="flex items-center gap-2">
-                                        {/* Micro-Insight Badge */}
-                                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800 border border-gray-200">
-                                            {activeTab === 'cooling' ? 'Value Alert' : 'Insight'}
-                                        </span>
-                                        <span className="truncate">{city.insight}</span>
+                                        <span className="truncate group-hover:text-gray-900 transition-colors">{city.insight}</span>
                                     </div>
                                 </td>
                             </tr>

@@ -2,6 +2,7 @@ import { NavBar } from "@/components/NavBar";
 import { TrendTable } from "@/components/TrendTable";
 import { DataHubTeaser } from "@/components/DataHubTeaser";
 import { TabNavigation } from "@/components/TabNavigation";
+import { HeroSpotlight } from "@/components/HeroSpotlight";
 import { supabase } from "@/lib/supabase";
 import { CityTrend } from "@/lib/data";
 import { cn } from "@/lib/utils";
@@ -143,6 +144,9 @@ export default async function Home(props: {
         </div>
 
         <div className="mb-12">
+          {/* Hero Spotlight */}
+          <HeroSpotlight activeTab={activeTab} data={displayData} />
+
           <div className={cn("mb-4 border-l-4 pl-3 transition-colors", listBorder)}>
             <p className="text-sm text-gray-500 font-medium">{listDesc}</p>
           </div>
