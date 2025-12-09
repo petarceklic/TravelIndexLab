@@ -49,6 +49,7 @@ export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: 
     let metricHeader = "Momentum"; // Default Rising
     if (activeTab === 'cooling') metricHeader = "Quiet Score";
     if (activeTab === 'established') metricHeader = "Volume Stability";
+    if (activeTab === 'regions') metricHeader = "Aggregate Score";
 
     return (
         <div className="w-full overflow-x-auto bg-lab-white rounded-lg shadow-sm border border-gray-100 relative">
@@ -56,11 +57,11 @@ export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: 
                 <thead className="sticky top-0 z-10 bg-white/90 backdrop-blur-md text-xs uppercase tracking-wider text-gray-500 font-medium border-b border-gray-100 shadow-sm">
                     <tr>
                         <th className="px-6 py-4 font-mono text-center w-16">#</th>
-                        <th className="px-6 py-4">City</th>
-                        <th className="px-6 py-4 w-48">6-Month Trend</th>
+                        <th className="px-6 py-4">City / Region</th>
+                        <th className="px-6 py-4 w-48">Trend Profile</th>
                         <th className="px-6 py-4 w-40 text-center">{metricHeader}</th>
                         <th className="px-6 py-4 text-right font-mono">Index</th>
-                        <th className="px-6 py-4 hidden md:table-cell">Insight</th>
+                        <th className="px-6 py-4 hidden md:table-cell">Key Insight</th>
                     </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-50 bg-lab-white">
@@ -69,10 +70,22 @@ export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: 
                         let effectiveDirection = city.trendDirection;
                         if (activeTab === 'rising') effectiveDirection = 'rising';
                         if (activeTab === 'cooling') effectiveDirection = 'cooling';
+                        // Keep regions 'stable' or whatever passed
 
-                        // Theme Colors: Rising=Emerald, Softening=DeepOcean, Classic=Slate
-                        const trendHex = effectiveDirection === 'rising' ? '#10B981' : effectiveDirection === 'cooling' ? '#0081A7' : '#64748B';
-                        const borderClass = effectiveDirection === 'rising' ? 'group-hover:border-signal-emerald' : effectiveDirection === 'cooling' ? 'group-hover:border-deep-ocean' : 'group-hover:border-slate-400';
+                        // Theme Colors: Rising=Emerald, Softening=DeepOcean, Classic=Slate, Regions=Indigo
+                        let trendHex = '#64748B'; // Default Slate
+                        let borderClass = 'group-hover:border-slate-400';
+
+                        if (effectiveDirection === 'rising') {
+                            trendHex = '#10B981';
+                            borderClass = 'group-hover:border-signal-emerald';
+                        } else if (effectiveDirection === 'cooling') {
+                            trendHex = '#0081A7';
+                            borderClass = 'group-hover:border-deep-ocean';
+                        } else if (activeTab === 'regions') {
+                            trendHex = '#4F46E5'; // Electric Indigo for Regions
+                            borderClass = 'group-hover:border-electric-indigo';
+                        }
 
                         // Dynamic Badge Logic
                         let Badge = null;
@@ -90,8 +103,15 @@ export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: 
                                     <span className="text-xs text-gray-400 font-medium uppercase">Price Drop</span>
                                 </div>
                             );
+                        } else if (activeTab === 'regions') {
+                            Badge = (
+                                <div className="flex flex-col items-center">
+                                    <span className="text-electric-indigo font-bold text-lg">High</span>
+                                    <span className="text-xs text-indigo-400 font-medium uppercase">Activity</span>
+                                </div>
+                            );
                         } else {
-                            // Classic / Regions
+                            // Classic
                             Badge = (
                                 <div className="flex flex-col items-center">
                                     <span className="text-slate-500 font-bold text-lg">High</span>
@@ -125,7 +145,9 @@ export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: 
                                 <td className="px-6 py-5 text-right">
                                     <span className={cn(
                                         "font-mono font-bold text-xl",
-                                        effectiveDirection === 'rising' ? 'text-signal-emerald' : effectiveDirection === 'cooling' ? 'text-deep-ocean' : 'text-slate-500'
+                                        activeTab === 'regions' ? 'text-electric-indigo' :
+                                            effectiveDirection === 'rising' ? 'text-signal-emerald' :
+                                                effectiveDirection === 'cooling' ? 'text-deep-ocean' : 'text-slate-500'
                                     )}>
                                         {city.indexScore}
                                     </span>
