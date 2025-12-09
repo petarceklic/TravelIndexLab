@@ -42,7 +42,7 @@ export default async function Home(props: {
 
   if (isRegionView && rawCities) {
     // Aggregate by Region
-    const regions: Record<string, CityTrend[]> = {};
+    const regions: Record<string, any[]> = {};
 
     rawCities.forEach(city => {
       if (!regions[city.region]) regions[city.region] = [];
