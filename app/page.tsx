@@ -4,6 +4,8 @@ import { DataHubTeaser } from "@/components/DataHubTeaser";
 import { supabase } from "@/lib/supabase";
 import { CityTrend } from "@/lib/data";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const { data: rawCities } = await supabase
     .from('city_trends')
