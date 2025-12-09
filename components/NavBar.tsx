@@ -14,7 +14,7 @@ export function NavBar() {
                         TI
                     </div>
                     <span className="font-serif font-bold text-xl tracking-tight text-obsidian hidden sm:block">
-                        TravelIndexLab
+                        Travel Index Lab
                     </span>
                 </div>
 
