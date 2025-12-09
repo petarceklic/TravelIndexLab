@@ -3,24 +3,71 @@ import { TrendTable } from "@/components/TrendTable";
 import { DataHubTeaser } from "@/components/DataHubTeaser";
 import { supabase } from "@/lib/supabase";
 import { CityTrend } from "@/lib/data";
+import { cn } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
-export default async function Home() {
-  const { data: rawCities } = await supabase
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
+
+export default async function Home(props: {
+  searchParams: SearchParams
+}) {
+  const searchParams = await props.searchParams
+  const activeTab = (searchParams.tab as string) || 'rising';
+  const activeRegion = (searchParams.region as string) || null;
+
+  // Build Query
+  let query = supabase
     .from('city_trends')
     .select('*')
     .order('rank', { ascending: true });
+
+  // Filter by Tab (Category)
+  if (activeTab === 'rising') {
+    query = query.eq('category', 'rising');
+  } else if (activeTab === 'cooling') {
+    query = query.eq('category', 'cooling');
+  } else if (activeTab === 'established') {
+    // For established, we might want stable trends or explicit category
+    query = query.eq('category', 'established');
+  }
+
+  // Filter by Region
+  if (activeRegion) {
+    query = query.eq('region', activeRegion);
+  }
+
+  const { data: rawCities } = await query;
 
   const cities: CityTrend[] = (rawCities || []).map(city => ({
     rank: city.rank,
     city: city.city,
     country: city.country,
     trendDirection: city.trend_direction,
+    category: city.category,
+    region: city.region,
     indexScore: city.index_score,
     sparklineData: city.sparkline_data,
     insight: city.insight
   }));
+
+  // Dynamic Header Text
+  let listTitle = "Rising Cities (Heatmap)";
+  let listDesc = "Cities with the highest positive momentum score this month.";
+  let listColor = "text-signal-coral";
+  let listBorder = "border-signal-coral";
+
+  if (activeTab === 'cooling') {
+    listTitle = "Cooling Opportunities (Value)";
+    listDesc = "Popular destinations seeing a dip in crowds and prices.";
+    listColor = "text-deep-ocean";
+    listBorder = "border-deep-ocean";
+  } else if (activeTab === 'established') {
+    listTitle = "Established Anchors";
+    listDesc = "High-volume, low-volatility global staples.";
+    listColor = "text-amber-500";
+    listBorder = "border-amber-500";
+  }
 
   return (
     <div className="min-h-screen bg-vapor-grey flex flex-col font-sans">
@@ -38,10 +85,14 @@ export default async function Home() {
         </div>
 
         <div className="mb-12">
-          <h2 className="text-sm font-bold text-signal-coral uppercase tracking-wider mb-4 border-l-4 border-signal-coral pl-3">
-            Rising Cities (Heatmap)
-          </h2>
-          <TrendTable data={cities} />
+          <div className="mb-4">
+            <h2 className={cn("text-sm font-bold uppercase tracking-wider mb-1 border-l-4 pl-3 transition-colors", listColor, listBorder)}>
+              {listTitle}
+            </h2>
+            <p className="text-xs text-gray-500 pl-4">{listDesc}</p>
+          </div>
+
+          <TrendTable data={cities} activeTab={activeTab} />
         </div>
       </main>
 

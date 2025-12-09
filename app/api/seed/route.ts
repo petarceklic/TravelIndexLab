@@ -21,6 +21,8 @@ export async function GET() {
             city: city.city,
             country: city.country,
             trend_direction: city.trendDirection,
+            category: city.category,
+            region: city.region,
             index_score: city.indexScore,
             sparkline_data: city.sparklineData,
             insight: city.insight

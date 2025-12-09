@@ -6,11 +6,17 @@ create table city_trends (
   city text not null,
   country text not null,
   trend_direction text check (trend_direction in ('rising', 'cooling', 'stable')),
+  category text check (category in ('rising', 'cooling', 'established')), 
+  region text check (region in ('Asia-Pacific', 'Europe', 'Americas', 'Middle East/Africa')),
   index_score integer,
   sparkline_data numeric[], -- Array of numbers
   insight text,
   created_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
+
+-- MIGRATION HELP (If table already exists, run these lines instead):
+-- alter table city_trends add column category text check (category in ('rising', 'cooling', 'established'));
+-- alter table city_trends add column region text check (region in ('Asia-Pacific', 'Europe', 'Americas', 'Middle East/Africa'));
 
 -- Enable Row Level Security (RLS) is good practice, but for a public read-only dashboard:
 alter table city_trends enable row level security;

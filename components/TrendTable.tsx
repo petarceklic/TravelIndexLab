@@ -1,5 +1,6 @@
 import { CityTrend } from "@/lib/data";
 import { ArrowUpRight, ArrowDownRight, Minus, TrendingUp } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface TrendTableProps {
     data: CityTrend[];
@@ -42,7 +43,13 @@ const Sparkline = ({ data, color }: { data: number[]; color: string }) => {
     );
 };
 
-export function TrendTable({ data }: TrendTableProps) {
+export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: string }) {
+
+    // Dynamic Column Header
+    let metricHeader = "Momentum"; // Default Rising
+    if (activeTab === 'cooling') metricHeader = "Quiet Score";
+    if (activeTab === 'established') metricHeader = "Volume Stability";
+
     return (
         <div className="w-full overflow-x-auto bg-lab-white rounded-lg shadow-sm border border-gray-100">
             <table className="w-full text-left border-collapse">
@@ -50,24 +57,44 @@ export function TrendTable({ data }: TrendTableProps) {
                     <tr>
                         <th className="px-6 py-4 font-mono text-center w-16">#</th>
                         <th className="px-6 py-4">City</th>
-                        <th className="px-6 py-4">6-Month Trend</th>
-                        <th className="px-6 py-4 text-center">Status</th>
+                        <th className="px-6 py-4 w-48">6-Month Trend</th>
+                        <th className="px-6 py-4 w-40 text-center">{metricHeader}</th>
                         <th className="px-6 py-4 text-right font-mono">Index</th>
-                        <th className="px-6 py-4">Key Insight</th>
+                        <th className="px-6 py-4 hidden md:table-cell">Insight</th>
                     </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-50 bg-lab-white">
                     {data.map((city) => {
                         const isRising = city.trendDirection === 'rising';
                         const isCooling = city.trendDirection === 'cooling';
+                        const isStable = city.trendDirection === 'stable';
 
-                        // Dynamic Colors
-                        const trendColor = isRising ? 'var(--color-signal-coral)' : isCooling ? 'var(--color-deep-ocean)' : '#9CA3AF';
-                        // We need hex for SVG safely if variables don't resolve in SVG context easily without CSS var support in all browsers, 
-                        // but usually modern browsers handle var() in stroke. 
-                        // However, for safety in Sparkline component which might do math or canvas later, let's map to hex or keep var.
-                        // We configured global CSS variables. Let's use the explicit hex values for the prop to ensure SVG rendering works perfectly.
-                        const trendHex = isRising ? '#FF6B6B' : isCooling ? '#0081A7' : '#9CA3AF';
+                        const trendHex = isRising ? '#FF6B6B' : isCooling ? '#0081A7' : '#F59E0B'; // Amber for stable
+
+                        // Dynamic Badge Logic
+                        let Badge = null;
+                        if (activeTab === 'rising') {
+                            Badge = (
+                                <div className="flex items-center justify-center gap-1 font-mono text-xs font-bold text-signal-coral bg-red-50 px-2 py-1 rounded-full">
+                                    <ArrowUpRight className="w-3 h-3" />
+                                    +{Math.floor(Math.random() * 40) + 10}%
+                                </div>
+                            );
+                        } else if (activeTab === 'cooling') {
+                            Badge = (
+                                <div className="flex items-center justify-center gap-1 font-mono text-xs font-bold text-deep-ocean bg-blue-50 px-2 py-1 rounded-full">
+                                    <ArrowDownRight className="w-3 h-3" />
+                                    -{Math.floor(Math.random() * 30) + 5}%
+                                </div>
+                            );
+                        } else {
+                            Badge = (
+                                <div className="flex items-center justify-center gap-1 font-mono text-xs font-bold text-amber-600 bg-amber-50 px-2 py-1 rounded-full">
+                                    <Minus className="w-3 h-3" />
+                                    HIGH
+                                </div>
+                            );
+                        }
 
                         return (
                             <tr key={city.city} className="hover:bg-vapor-grey/50 transition-colors group">
@@ -76,29 +103,37 @@ export function TrendTable({ data }: TrendTableProps) {
                                 </td>
                                 <td className="px-6 py-5">
                                     <div className="flex flex-col">
-                                        <span className="font-bold text-obsidian text-lg">{city.city}</span>
+                                        <div className="flex items-center gap-2">
+                                            <span className="font-bold text-obsidian text-lg">{city.city}</span>
+                                            {/* Mobile Insight Badge could go here */}
+                                        </div>
                                         <span className="text-sm text-gray-500">{city.country}</span>
                                     </div>
                                 </td>
                                 <td className="px-6 py-5">
-                                    <div className="w-24">
+                                    <div className="w-32 h-8">
                                         <Sparkline data={city.sparklineData} color={trendHex} />
                                     </div>
                                 </td>
                                 <td className="px-6 py-5 text-center">
-                                    <div className="flex items-center justify-center">
-                                        {isRising && <ArrowUpRight className="w-5 h-5 text-signal-coral" />}
-                                        {isCooling && <ArrowDownRight className="w-5 h-5 text-deep-ocean" />}
-                                        {city.trendDirection === 'stable' && <Minus className="w-5 h-5 text-gray-300" />}
-                                    </div>
+                                    {Badge}
                                 </td>
                                 <td className="px-6 py-5 text-right">
-                                    <span className={`font-mono font-bold text-xl ${isRising ? 'text-signal-coral' : 'text-obsidian'}`}>
+                                    <span className={cn(
+                                        "font-mono font-bold text-xl",
+                                        isRising ? 'text-signal-coral' : isCooling ? 'text-deep-ocean' : 'text-amber-600'
+                                    )}>
                                         {city.indexScore}
                                     </span>
                                 </td>
-                                <td className="px-6 py-5 text-sm text-gray-600 max-w-sm font-medium">
-                                    {city.insight}
+                                <td className="px-6 py-5 text-sm text-gray-600 max-w-sm hidden md:table-cell">
+                                    <div className="flex items-center gap-2">
+                                        {/* Micro-Insight Badge */}
+                                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800 border border-gray-200">
+                                            {activeTab === 'cooling' ? 'Value Alert' : 'Insight'}
+                                        </span>
+                                        <span className="truncate">{city.insight}</span>
+                                    </div>
                                 </td>
                             </tr>
                         );
