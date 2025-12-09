@@ -52,17 +52,19 @@ export default async function Home(props: {
     displayData = Object.entries(regions).map(([regionName, citiesInRegion], index) => {
       // Calculate aggregates
       const count = citiesInRegion.length;
-      const avgScore = citiesInRegion.reduce((sum, c) => sum + c.index_score, 0) / count;
+      const avgScore = citiesInRegion.reduce((sum, c) => sum + (c.index_score || 0), 0) / count;
 
       // Create a composite sparkline (average of all cities)
-      const sparklineLength = citiesInRegion[0]?.sparkline_data.length || 6;
+      const firstCity = citiesInRegion[0];
+      const sparklineLength = firstCity?.sparkline_data?.length || 6;
+
       const avgSparkline = Array.from({ length: sparklineLength }, (_, i) => {
-        const sumAtPoint = citiesInRegion.reduce((sum, c) => sum + (c.sparkline_data[i] || 0), 0);
+        const sumAtPoint = citiesInRegion.reduce((sum, c) => sum + (c.sparkline_data?.[i] || 0), 0);
         return Math.round(sumAtPoint / count);
       });
 
       // Find top trending city for insight
-      const topCity = citiesInRegion.sort((a, b) => b.index_score - a.index_score)[0];
+      const topCity = citiesInRegion.sort((a, b) => (b.index_score || 0) - (a.index_score || 0))[0];
 
       return {
         rank: index + 1,
@@ -70,10 +72,10 @@ export default async function Home(props: {
         country: `${count} Active Cities`, // Hijack 'country' for Count
         trendDirection: 'stable', // Default for region unless we calc it
         category: 'established', // Use established color scheme
-        region: regionName,
+        region: regionName as any, // FORCE CAST to strict union type
         indexScore: Math.round(avgScore),
         sparklineData: avgSparkline,
-        insight: `Top: ${topCity.city} (${topCity.index_score})`
+        insight: topCity ? `Top: ${topCity.city} (${topCity.index_score})` : 'No data'
       };
     });
 
