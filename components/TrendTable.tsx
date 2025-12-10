@@ -71,7 +71,7 @@ export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: 
                         let effectiveDirection = city.trendDirection;
                         if (activeTab === 'rising') effectiveDirection = 'rising';
                         if (activeTab === 'cooling') effectiveDirection = 'cooling';
-                        // Keep regions 'stable' or whatever passed
+                        if (activeTab === 'regions') effectiveDirection = 'regions'; // Explicitly force regions
 
                         // Theme Colors: Rising=Emerald, Softening=DeepOcean, Classic=Slate, Regions=Indigo
                         let trendHex = '#64748B'; // Default Slate
@@ -83,7 +83,7 @@ export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: 
                         } else if (effectiveDirection === 'cooling') {
                             trendHex = '#0081A7';
                             borderClass = 'group-hover:border-l-deep-ocean';
-                        } else if (activeTab === 'regions') {
+                        } else if (effectiveDirection === 'regions') {
                             trendHex = '#4F46E5'; // Electric Indigo for Regions
                             borderClass = 'group-hover:border-l-electric-indigo';
                         }
