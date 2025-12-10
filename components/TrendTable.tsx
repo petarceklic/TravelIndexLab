@@ -89,10 +89,10 @@ const Sparkline = ({ data, color }: { data: number[]; color: string }) => {
 export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: string }) {
 
     // Dynamic Column Header
-    let metricHeader = "Momentum"; // Default Rising
-    if (activeTab === 'cooling') metricHeader = "Quiet Score";
-    if (activeTab === 'established') metricHeader = "Volume Stability";
-    if (activeTab === 'regions') metricHeader = "Aggregate Score";
+    let metricHeader = "GROWTH"; // Default Rising
+    if (activeTab === 'cooling') metricHeader = "DECLINE";
+    if (activeTab === 'established') metricHeader = "GROWTH"; // Or VOLUME if preferred, but user said GROWTH default
+    if (activeTab === 'regions') metricHeader = "GROWTH";
 
     return (
         <div className="w-full overflow-x-auto bg-lab-white rounded-lg shadow-sm border border-gray-100 relative">
@@ -101,10 +101,10 @@ export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: 
                     <tr>
                         <th className="px-6 py-4 font-mono text-center w-16">#</th>
                         <th className="px-6 py-4">City / Region</th>
-                        <th className="px-2 py-4 text-center w-20">MoM</th>
-                        <th className="px-6 py-4 w-48">Trend Profile</th>
+                        <th className="px-2 py-4 text-center w-20">Change</th>
+                        <th className="px-6 py-4 w-48">6 Month Trend</th>
                         <th className="px-6 py-4 w-40 text-center">{metricHeader}</th>
-                        <th className="px-6 py-4 text-right font-mono">Index</th>
+                        <th className="px-6 py-4 text-right font-mono">INDEX</th>
                         <th className="px-6 py-4 hidden md:table-cell">Key Insight</th>
                     </tr>
                 </thead>
@@ -135,7 +135,6 @@ export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: 
                         let MovementDisplay = (
                             <div className="flex items-center justify-center gap-1 opacity-50">
                                 <Minus className="w-3 h-3 text-gray-400" />
-                                <span className="text-xs font-mono text-gray-400">-</span>
                             </div>
                         );
 
@@ -156,27 +155,24 @@ export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: 
                         }
 
 
-                        // Dynamic Badge Logic
+                        // Dynamic Badge Logic (Clean Number Only)
                         let Badge = null;
                         if (activeTab === 'rising') {
                             Badge = (
                                 <div className="flex flex-col items-center">
                                     <span className="text-signal-emerald font-bold text-lg">+{Math.floor(Math.random() * 20) + 12}%</span>
-                                    <span className="text-xs text-gray-400 font-medium uppercase">MoM</span>
                                 </div>
                             );
                         } else if (activeTab === 'cooling') {
                             Badge = (
                                 <div className="flex flex-col items-center">
                                     <span className="text-deep-ocean font-bold text-lg">-{Math.floor(Math.random() * 15) + 5}%</span>
-                                    <span className="text-xs text-gray-400 font-medium uppercase">Price Drop</span>
                                 </div>
                             );
                         } else if (activeTab === 'regions') {
                             Badge = (
                                 <div className="flex flex-col items-center">
                                     <span className="text-electric-indigo font-bold text-lg">High</span>
-                                    <span className="text-xs text-indigo-400 font-medium uppercase">Activity</span>
                                 </div>
                             );
                         } else {
@@ -184,7 +180,6 @@ export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: 
                             Badge = (
                                 <div className="flex flex-col items-center">
                                     <span className="text-slate-500 font-bold text-lg">High</span>
-                                    <span className="text-xs text-slate-400 font-medium uppercase">Volume</span>
                                 </div>
                             );
                         }
