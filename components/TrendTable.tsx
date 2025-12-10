@@ -1,6 +1,7 @@
 import { CityTrend } from "@/lib/data";
 import { ArrowUpRight, ArrowDownRight, Minus, TrendingUp } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { CountryFlag } from "@/components/CountryFlag";
 
 interface TrendTableProps {
     data: CityTrend[];
@@ -197,9 +198,11 @@ export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: 
                                     <div className="flex flex-col">
                                         <div className="flex items-center gap-2">
                                             <span className="font-bold text-obsidian text-lg group-hover:text-electric-indigo transition-colors">{city.city}</span>
-                                            {/* Mobile Insight Badge could go here */}
                                         </div>
-                                        <span className="text-sm text-gray-500 font-medium">{city.country}</span>
+                                        <div className="flex items-center gap-1.5 mt-0.5">
+                                            <CountryFlag country={city.country} className="w-4 h-3" />
+                                            <span className="text-sm text-gray-500 font-medium">{city.country}</span>
+                                        </div>
                                     </div>
                                 </td>
                                 <td className="px-2 py-5 text-center">
