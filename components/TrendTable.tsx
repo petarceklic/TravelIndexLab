@@ -68,7 +68,7 @@ export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: 
                 <tbody className="bg-lab-white">
                     {data.map((city, index) => {
                         // Force color override if in a specific tab context
-                        let effectiveDirection = city.trendDirection;
+                        let effectiveDirection: string = city.trendDirection;
                         if (activeTab === 'rising') effectiveDirection = 'rising';
                         if (activeTab === 'cooling') effectiveDirection = 'cooling';
                         if (activeTab === 'regions') effectiveDirection = 'regions'; // Explicitly force regions
