@@ -13,7 +13,7 @@ export function NavBar() {
                     <div className="w-8 h-8 bg-obsidian text-lab-white flex items-center justify-center font-serif font-bold rounded-sm">
                         TI
                     </div>
-                    <span className="font-serif font-bold text-xl tracking-tight text-obsidian">
+                    <span className="font-serif font-bold text-xl tracking-tight text-obsidian inline-block">
                         Travel Index Lab
                     </span>
                 </div>
