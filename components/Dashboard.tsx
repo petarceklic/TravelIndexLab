@@ -178,19 +178,23 @@ export function Dashboard({ initialData, initialTab }: DashboardProps) {
     return (
         <div className="mb-8">
             <div className="mb-8">
-                <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-6">
-                    <div>
-                        <h1 className="text-3xl font-bold text-obsidian tracking-tight mb-2">
-                            Global Signal Index
-                        </h1>
-                        <p className="text-gray-500 max-w-xl">
-                            Real-time tracking of travel intent, social velocity, and booking volume.
-                            Updated hourly.
-                        </p>
+                <div className="mb-6">
+                    <h1 className="text-3xl font-bold text-obsidian tracking-tight mb-2">
+                        Global Signal Index
+                    </h1>
+                    <p className="text-gray-500 max-w-xl">
+                        Real-time tracking of travel intent, social velocity, and booking volume.
+                        Updated hourly.
+                    </p>
+                </div>
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6 relative">
+                    {/* Client Side Tab Nav */}
+                    <div className={cn("transition-opacity duration-200 flex-1 overflow-x-hidden", searchQuery ? "opacity-30 pointer-events-none grayscale" : "opacity-100")}>
+                        <TabNavigation activeTab={activeTab} onTabChange={handleTabChange} />
                     </div>
 
-                    {/* Search Input */}
-                    <div className="relative w-full md:w-64">
+                    {/* Search Input - Now on the right rail */}
+                    <div className="relative w-full md:w-64 shrink-0">
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <Search className="h-4 w-4 text-gray-400" />
                         </div>
@@ -202,11 +206,6 @@ export function Dashboard({ initialData, initialTab }: DashboardProps) {
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
                     </div>
-                </div>
-
-                {/* Client Side Tab Nav (Hidden if searching? No, keep it visible but maybe dimmed) */}
-                <div className={cn("transition-opacity duration-200", searchQuery ? "opacity-30 pointer-events-none grayscale" : "opacity-100")}>
-                    <TabNavigation activeTab={activeTab} onTabChange={handleTabChange} />
                 </div>
             </div>
 
