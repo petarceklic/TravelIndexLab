@@ -24,17 +24,20 @@ export function Dashboard({ initialData, initialTab }: DashboardProps) {
 
     // Filter Logic
     const displayData = useMemo(() => {
+        // Robust Client-Side Deduplication (Handling dirty DB state)
+        const uniqueData = Array.from(new Map(initialData.map(item => [item.city, item])).values());
+
         let filtered: CityTrend[] = [];
         let isRegionView = false;
 
-        let dataToFilter = initialData;
+        let dataToFilter = uniqueData;
 
         if (activeTab === 'regions') {
             isRegionView = true;
             // Region logic here (copied from page.tsx)
             const regions: Record<string, any[]> = {};
 
-            initialData.forEach(city => {
+            uniqueData.forEach(city => {
                 if (!city.region) return;
                 if (!regions[city.region]) regions[city.region] = [];
                 regions[city.region].push(city);
@@ -84,9 +87,9 @@ export function Dashboard({ initialData, initialTab }: DashboardProps) {
         }
 
         // Standard Filter
-        if (activeTab === 'rising') dataToFilter = initialData.filter(c => c.category === 'rising');
-        if (activeTab === 'cooling') dataToFilter = initialData.filter(c => c.category === 'cooling');
-        if (activeTab === 'established') dataToFilter = initialData.filter(c => c.category === 'established');
+        if (activeTab === 'rising') dataToFilter = uniqueData.filter(c => c.category === 'rising');
+        if (activeTab === 'cooling') dataToFilter = uniqueData.filter(c => c.category === 'cooling');
+        if (activeTab === 'established') dataToFilter = uniqueData.filter(c => c.category === 'established');
 
         // Map to CityTrend
         filtered = dataToFilter.map((city) => {
