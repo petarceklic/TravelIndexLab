@@ -91,8 +91,9 @@ export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: 
     // Dynamic Column Header
     let metricHeader = "GROWTH"; // Default Rising
     if (activeTab === 'cooling') metricHeader = "DECLINE";
-    if (activeTab === 'established') metricHeader = "GROWTH"; // Or VOLUME if preferred, but user said GROWTH default
+    if (activeTab === 'established') metricHeader = "GROWTH";
     if (activeTab === 'regions') metricHeader = "GROWTH";
+    if (activeTab === 'hidden-gems') metricHeader = "DISCOVERY";
 
     return (
         <div className="w-full overflow-x-auto bg-lab-white rounded-lg shadow-sm border border-gray-100 relative">
@@ -114,9 +115,10 @@ export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: 
                         let effectiveDirection: string = city.trendDirection;
                         if (activeTab === 'rising') effectiveDirection = 'rising';
                         if (activeTab === 'cooling') effectiveDirection = 'cooling';
-                        if (activeTab === 'regions') effectiveDirection = 'regions'; // Explicitly force regions
+                        if (activeTab === 'regions') effectiveDirection = 'regions';
+                        if (activeTab === 'hidden-gems') effectiveDirection = 'hidden-gems';
 
-                        // Theme Colors: Rising=Emerald, Softening=DeepOcean, Classic=Slate, Regions=Indigo
+                        // Theme Colors: Rising=Emerald, Softening=DeepOcean, Classic=Slate, Regions=Indigo, Gems=Purple
                         let trendHex = '#64748B'; // Default Slate
                         let borderClass = 'group-hover:border-l-slate-400';
 
@@ -129,6 +131,9 @@ export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: 
                         } else if (effectiveDirection === 'regions') {
                             trendHex = '#4F46E5'; // Electric Indigo for Regions
                             borderClass = 'group-hover:border-l-electric-indigo';
+                        } else if (effectiveDirection === 'hidden-gems') {
+                            trendHex = '#A855F7'; // Purple-500
+                            borderClass = 'group-hover:border-l-purple-500';
                         }
 
                         // Rank Movement Icon & Number
@@ -173,6 +178,13 @@ export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: 
                             Badge = (
                                 <div className="flex flex-col items-center">
                                     <span className="text-electric-indigo font-bold text-lg">High</span>
+                                </div>
+                            );
+                        } else if (activeTab === 'hidden-gems') {
+                            Badge = (
+                                <div className="flex flex-col items-center">
+                                    {/* Using Purple for Gems */}
+                                    <span className="text-purple-500 font-bold text-lg">Rare</span>
                                 </div>
                             );
                         } else {

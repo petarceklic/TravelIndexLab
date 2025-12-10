@@ -6,7 +6,8 @@ import {
     TrendingDown,
     Landmark,
     Globe,
-    Lock
+    Lock,
+    Sparkles
 } from "lucide-react";
 
 interface TabNavigationProps {
@@ -45,17 +46,17 @@ export function TabNavigation({ activeTab, onTabChange }: TabNavigationProps) {
                 Softening Cities
             </button>
 
-            {/* Classic (was Established) */}
+            {/* Hidden Gems (was Classic) */}
             <button
-                onClick={() => onTabChange('established')}
+                onClick={() => onTabChange('hidden-gems')}
                 className={cn(
                     "flex items-center gap-2 px-3 py-2 text-lg font-medium border-b-2 transition-all whitespace-nowrap cursor-pointer",
-                    activeTab === 'established'
-                        ? "border-slate-500 text-obsidian"
+                    activeTab === 'hidden-gems'
+                        ? "border-purple-500 text-purple-600"
                         : "border-transparent text-gray-500 hover:text-obsidian hover:border-gray-200"
                 )}>
-                <Landmark className={cn("w-5 h-5", activeTab === 'established' ? "text-slate-500" : "text-gray-400")} />
-                Classic Cities
+                <Sparkles className={cn("w-5 h-5", activeTab === 'hidden-gems' ? "text-purple-500 fill-purple-100" : "text-gray-400")} />
+                Hidden Gems
             </button>
 
             {/* Regional Index */}
