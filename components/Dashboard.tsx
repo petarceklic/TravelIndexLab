@@ -10,10 +10,17 @@ import { cn } from "@/lib/utils";
 
 interface DashboardProps {
     initialData: any[]; // Raw Supabase data
+    initialTab: string;
 }
 
-export function Dashboard({ initialData }: DashboardProps) {
-    const [activeTab, setActiveTab] = useState<string>('rising');
+export function Dashboard({ initialData, initialTab }: DashboardProps) {
+    const [activeTab, setActiveTab] = useState<string>(initialTab);
+
+    const handleTabChange = (tab: string) => {
+        setActiveTab(tab);
+        // Shallow URL update to keep state shareable without reloading
+        window.history.replaceState(null, '', `?tab=${tab}`);
+    };
 
     // Filter Logic
     const displayData = useMemo(() => {
@@ -139,7 +146,7 @@ export function Dashboard({ initialData }: DashboardProps) {
                 </p>
 
                 {/* Client Side Tab Nav */}
-                <TabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
+                <TabNavigation activeTab={activeTab} onTabChange={handleTabChange} />
             </div>
 
             <div className="mb-12">
