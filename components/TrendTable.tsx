@@ -7,37 +7,79 @@ interface TrendTableProps {
 }
 
 const Sparkline = ({ data, color }: { data: number[]; color: string }) => {
-    const width = 100;
-    const height = 30;
+    const width = 120; // Slightly wider for elegance
+    const height = 40; // Slightly taller
     const min = Math.min(...data);
     const max = Math.max(...data);
     const range = max - min;
 
-    // Normalize points to fit SVG
+    // Helper to calculate Y position
+    const getY = (val: number) => {
+        const normalizedY = range === 0 ? 0.5 : (val - min) / range;
+        return height - (normalizedY * (height - 10)) - 5; // Add padding top/bottom
+    };
+
+    // Calculate Points
     const points = data.map((val, i) => {
         const x = (i / (data.length - 1)) * width;
-        const normalizedY = range === 0 ? 0.5 : (val - min) / range;
-        const y = height - (normalizedY * height);
+        const y = getY(val);
         return `${x},${y}`;
     }).join(" ");
 
+    // Calculate Fill Path (Close the loop at the bottom)
+    const fillPath = `
+        M 0,${height} 
+        L 0,${getY(data[0])} 
+        ${data.map((val, i) => `L ${(i / (data.length - 1)) * width},${getY(val)}`).join(" ")} 
+        L ${width},${height} 
+        Z
+    `;
+
     return (
-        <svg width={width} height={height} className="overflow-visible">
-            {/* Line */}
+        <svg width="100%" height="100%" viewBox={`0 0 ${width} ${height}`} className="overflow-visible">
+            {/* Gradient Definition for Fill */}
+            <defs>
+                <linearGradient id={`gradient-${color}`} x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor={color} stopOpacity="0.2" />
+                    <stop offset="100%" stopColor={color} stopOpacity="0.05" />
+                </linearGradient>
+            </defs>
+
+            {/* Fill Area */}
+            <path
+                d={fillPath}
+                fill={`url(#gradient-${color})`}
+                stroke="none"
+            />
+
+            {/* Line Stroke */}
             <polyline
                 fill="none"
                 stroke={color}
-                strokeWidth="2"
+                strokeWidth="2.5"
                 points={points}
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
-            {/* End dot */}
+
+            {/* Start Dot */}
+            <circle
+                cx={0}
+                cy={getY(data[0])}
+                r="3"
+                fill="white"
+                stroke={color}
+                strokeWidth="2"
+            />
+
+            {/* End Dot */}
             <circle
                 cx={width}
-                cy={height - ((data[data.length - 1] - min) / range * height)}
+                cy={getY(data[data.length - 1])}
                 r="3"
-                fill={color}
+                fill="white"
+                stroke={color}
+                strokeWidth="2"
             />
         </svg>
     );
