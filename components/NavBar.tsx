@@ -10,10 +10,10 @@ export function NavBar() {
             <div className="container mx-auto px-4 h-16 flex items-center justify-between">
                 {/* Logo */}
                 <div className="flex items-center gap-2 cursor-pointer" onClick={() => router.push('/')}>
-                    <div className="w-8 h-8 bg-obsidian text-lab-white flex items-center justify-center font-serif font-bold rounded-sm">
+                    <div className="w-8 h-8 bg-obsidian text-lab-white flex items-center justify-center font-bold rounded-sm">
                         TI
                     </div>
-                    <span className="font-serif font-bold text-xl tracking-tight text-obsidian inline-block">
+                    <span className="font-bold text-xl tracking-tight text-obsidian inline-block">
                         Travel Index Lab
                     </span>
                 </div>
