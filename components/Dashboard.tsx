@@ -201,7 +201,7 @@ export function Dashboard({ initialData, initialTab }: DashboardProps) {
                         <input
                             type="text"
                             placeholder="Find a city..."
-                            className="block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-lg leading-5 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-obsidian focus:border-obsidian sm:text-sm transition duration-150 ease-in-out"
+                            className="block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-lg leading-snug bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-obsidian focus:border-obsidian text-lg transition duration-150 ease-in-out"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
