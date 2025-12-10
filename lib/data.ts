@@ -5,13 +5,13 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export type TrendDirection = 'rising' | 'cooling' | 'stable';
+export type TrendDirection = 'rising' | 'cooling' | 'stable' | 'regions';
 
 export interface CityTrend {
   rank: number;
   city: string;
   country: string;
-  trendDirection: 'rising' | 'cooling' | 'stable';
+  trendDirection: 'rising' | 'cooling' | 'stable' | 'regions';
   category: 'rising' | 'cooling' | 'established';
   region: 'Asia-Pacific' | 'Europe' | 'Americas' | 'Middle East/Africa';
   indexScore: number;
