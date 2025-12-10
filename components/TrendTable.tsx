@@ -99,13 +99,13 @@ export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: 
             <table className="w-full text-left border-collapse">
                 <thead className="sticky top-0 z-10 bg-white/90 backdrop-blur-md text-xs uppercase tracking-wider text-gray-500 font-medium border-b border-gray-100 shadow-sm">
                     <tr>
-                        <th className="px-6 py-4 font-mono text-center w-16">#</th>
-                        <th className="px-6 py-4">City / Region</th>
-                        <th className="px-2 py-4 text-center w-20">Change</th>
-                        <th className="px-6 py-4 w-48">6 Month Trend</th>
-                        <th className="px-6 py-4 w-40 text-center">{metricHeader}</th>
-                        <th className="px-6 py-4 text-right font-mono">INDEX</th>
-                        <th className="px-6 py-4 hidden md:table-cell">Key Insight</th>
+                        <th className="px-6 py-4 font-mono text-center w-[5%] min-w-[60px]">#</th>
+                        <th className="px-6 py-4 w-[25%] min-w-[200px]">City / Region</th>
+                        <th className="px-2 py-4 text-center w-[10%] min-w-[80px]">Change</th>
+                        <th className="px-6 py-4 w-[20%] min-w-[150px]">6 Month Trend</th>
+                        <th className="px-6 py-4 text-center w-[15%] min-w-[120px]">{metricHeader}</th>
+                        <th className="px-6 py-4 text-right font-mono w-[10%] min-w-[100px]">INDEX</th>
+                        <th className="px-6 py-4 hidden md:table-cell w-[15%]">Key Insight</th>
                     </tr>
                 </thead>
                 <tbody className="bg-lab-white">
