@@ -69,7 +69,6 @@ export function TabNavigation({ activeTab, onTabChange }: TabNavigationProps) {
                 )}>
                 <Globe className={cn("w-5 h-5", activeTab === 'regions' ? "text-electric-indigo" : "text-gray-400")} />
                 Regional Index
-                Regional Index
             </button>
         </div>
     );
