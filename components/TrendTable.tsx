@@ -197,10 +197,10 @@ export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: 
                                 <td className="px-6 py-5">
                                     <div className="flex flex-col">
                                         <div className="flex items-center gap-2">
-                                            <span className="font-bold text-obsidian text-lg group-hover:text-electric-indigo transition-colors">{city.city}</span>
                                             {index === 0 && <span className="text-xl" title="Rank #1">🥇</span>}
                                             {index === 1 && <span className="text-xl" title="Rank #2">🥈</span>}
                                             {index === 2 && <span className="text-xl" title="Rank #3">🥉</span>}
+                                            <span className="font-bold text-obsidian text-lg group-hover:text-electric-indigo transition-colors">{city.city}</span>
                                         </div>
                                         <div className="flex items-center gap-1.5 mt-0.5">
                                             <CountryFlag country={city.country} className="w-4 h-3" />
