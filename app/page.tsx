@@ -33,8 +33,6 @@ export default async function Home(props: {
       <main className="flex-1 container mx-auto px-4 py-8 pb-32">
         <Dashboard initialData={rawCities} initialTab={initialTab} />
       </main>
-
-      <DataHubTeaser />
     </div>
   );
 }

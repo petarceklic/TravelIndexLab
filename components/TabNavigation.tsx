@@ -69,12 +69,7 @@ export function TabNavigation({ activeTab, onTabChange }: TabNavigationProps) {
                 )}>
                 <Globe className={cn("w-5 h-5", activeTab === 'regions' ? "text-electric-indigo" : "text-gray-400")} />
                 Regional Index
-            </button>
-
-            {/* Full Index (Upsell) */}
-            <button className="flex items-center gap-1.5 px-3 py-1.5 ml-auto sm:ml-4 text-xs font-bold text-electric-indigo bg-indigo-50 border border-indigo-100 rounded-md hover:bg-indigo-100 transition-colors whitespace-nowrap">
-                <Lock className="w-3 h-3" />
-                Full Index
+                Regional Index
             </button>
         </div>
     );
