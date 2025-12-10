@@ -120,120 +120,117 @@ export function Dashboard({ initialData, initialTab }: DashboardProps) {
         }
 
         // Standard Tab Filter
-    }
-
-        // Standard Tab Filter
         if (activeTab === 'rising') dataToFilter = uniqueData.filter(c => c.category === 'rising');
-    if (activeTab === 'cooling') dataToFilter = uniqueData.filter(c => c.category === 'cooling');
+        if (activeTab === 'cooling') dataToFilter = uniqueData.filter(c => c.category === 'cooling');
 
-    // Hidden Gems Logic: High Score (>70) but Low Visibility (Rank > 15)
-    // We filter across ALL categories to find these outliers
-    if (activeTab === 'hidden-gems') {
-        dataToFilter = uniqueData.filter(c =>
-            (c.index_score || 0) > 70 &&
-            c.rank > 15
-        );
-    } else if (activeTab === 'established') {
-        // Fallback for direct URL legacy support, though button is gone
-        dataToFilter = uniqueData.filter(c => c.category === 'established');
+        // Hidden Gems Logic: High Score (>70) but Low Visibility (Rank > 15)
+        // We filter across ALL categories to find these outliers
+        if (activeTab === 'hidden-gems') {
+            dataToFilter = uniqueData.filter(c =>
+                (c.index_score || 0) > 70 &&
+                c.rank > 15
+            );
+        } else if (activeTab === 'established') {
+            // Fallback for direct URL legacy support, though button is gone
+            dataToFilter = uniqueData.filter(c => c.category === 'established');
+        }
+
+
+        // Map to CityTrend
+        filtered = dataToFilter.map((city) => {
+            const moveType = Math.random() > 0.7 ? 'up' : Math.random() > 0.4 ? 'down' : 'stable';
+            const moveValue = moveType === 'stable' ? 0 : Math.floor(Math.random() * 10) + 1;
+
+            return {
+                rank: city.rank,
+                city: city.city,
+                country: city.country,
+                trendDirection: city.trend_direction,
+                category: city.category,
+                region: city.region,
+                indexScore: city.index_score,
+                sparklineData: city.sparkline_data,
+                insight: city.insight,
+                rankMovement: moveType as any,
+                rankMovementValue: moveValue
+            };
+        });
+
+        return filtered.sort((a, b) => (b.indexScore || 0) - (a.indexScore || 0)); // Sort by score for gems
+    }, [activeTab, initialData, searchQuery]);
+
+    // Derived UI Strings
+    let listTitle = "Rising Cities (Heatmap)";
+    let listDesc = "Cities with the highest positive momentum score this month.";
+    let listColor = "text-signal-emerald";
+    let listBorder = "border-signal-emerald";
+
+    if (searchQuery.trim().length > 0) {
+        listTitle = `Search Results: "${searchQuery}"`;
+        listDesc = `Showing global matches for "${searchQuery}".`;
+        listColor = "text-obsidian";
+        listBorder = "border-obsidian";
+    } else if (activeTab === 'cooling') {
+        listTitle = "Softening Cities (Value)";
+        listDesc = "Popular destinations seeing a dip in crowds and prices. Great for value seekers.";
+        listColor = "text-deep-ocean";
+        listBorder = "border-deep-ocean";
+    } else if (activeTab === 'hidden-gems') {
+        listTitle = "Hidden Gems";
+        listDesc = "High-momentum cities flying under the radar.";
+        listColor = "text-purple-500";
+        listBorder = "border-purple-500";
+    } else if (activeTab === 'regions') {
+        listTitle = "Regional Index";
+        listDesc = "Aggregated travel demand and momentum by global territory.";
+        listColor = "text-electric-indigo";
+        listBorder = "border-electric-indigo";
     }
 
-
-    // Map to CityTrend
-    filtered = dataToFilter.map((city) => {
-        const moveType = Math.random() > 0.7 ? 'up' : Math.random() > 0.4 ? 'down' : 'stable';
-        const moveValue = moveType === 'stable' ? 0 : Math.floor(Math.random() * 10) + 1;
-
-        return {
-            rank: city.rank,
-            city: city.city,
-            country: city.country,
-            trendDirection: city.trend_direction,
-            category: city.category,
-            region: city.region,
-            indexScore: city.index_score,
-            sparklineData: city.sparkline_data,
-            insight: city.insight,
-            rankMovement: moveType as any,
-            rankMovementValue: moveValue
-        };
-    });
-
-    return filtered.sort((a, b) => (b.indexScore || 0) - (a.indexScore || 0)); // Sort by score for gems
-}, [activeTab, initialData, searchQuery]);
-
-// Derived UI Strings
-let listTitle = "Rising Cities (Heatmap)";
-let listDesc = "Cities with the highest positive momentum score this month.";
-let listColor = "text-signal-emerald";
-let listBorder = "border-signal-emerald";
-
-if (searchQuery.trim().length > 0) {
-    listTitle = `Search Results: "${searchQuery}"`;
-    listDesc = `Showing global matches for "${searchQuery}".`;
-    listColor = "text-obsidian";
-    listBorder = "border-obsidian";
-} else if (activeTab === 'cooling') {
-    listTitle = "Softening Cities (Value)";
-    listDesc = "Popular destinations seeing a dip in crowds and prices. Great for value seekers.";
-    listColor = "text-deep-ocean";
-    listBorder = "border-deep-ocean";
-} else if (activeTab === 'hidden-gems') {
-    listTitle = "Hidden Gems";
-    listDesc = "High-momentum cities flying under the radar.";
-    listColor = "text-purple-500";
-    listBorder = "border-purple-500";
-} else if (activeTab === 'regions') {
-    listTitle = "Regional Index";
-    listDesc = "Aggregated travel demand and momentum by global territory.";
-    listColor = "text-electric-indigo";
-    listBorder = "border-electric-indigo";
-}
-
-return (
-    <div className="mb-8">
+    return (
         <div className="mb-8">
-            <div className="mb-6">
-                <h1 className="text-3xl font-bold text-obsidian tracking-tight mb-2">
-                    Global Signal Index
-                </h1>
-                <p className="text-gray-500 max-w-xl">
-                    Real-time tracking of travel intent, social velocity, and booking volume.
-                    Updated hourly.
-                </p>
-            </div>
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6 relative">
-                {/* Client Side Tab Nav */}
-                <div className={cn("transition-opacity duration-200 flex-1 overflow-x-hidden", searchQuery ? "opacity-30 pointer-events-none grayscale" : "opacity-100")}>
-                    <TabNavigation activeTab={activeTab} onTabChange={handleTabChange} />
+            <div className="mb-8">
+                <div className="mb-6">
+                    <h1 className="text-3xl font-bold text-obsidian tracking-tight mb-2">
+                        Global Signal Index
+                    </h1>
+                    <p className="text-gray-500 max-w-xl">
+                        Real-time tracking of travel intent, social velocity, and booking volume.
+                        Updated hourly.
+                    </p>
                 </div>
-
-                {/* Search Input - Now on the right rail */}
-                <div className="relative w-full md:w-64 shrink-0">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <Search className="h-4 w-4 text-gray-400" />
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6 relative">
+                    {/* Client Side Tab Nav */}
+                    <div className={cn("transition-opacity duration-200 flex-1 overflow-x-hidden", searchQuery ? "opacity-30 pointer-events-none grayscale" : "opacity-100")}>
+                        <TabNavigation activeTab={activeTab} onTabChange={handleTabChange} />
                     </div>
-                    <input
-                        type="text"
-                        placeholder="Find a city..."
-                        className="block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-lg leading-snug bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-obsidian focus:border-obsidian text-lg transition duration-150 ease-in-out"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                    />
+
+                    {/* Search Input - Now on the right rail */}
+                    <div className="relative w-full md:w-64 shrink-0">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <Search className="h-4 w-4 text-gray-400" />
+                        </div>
+                        <input
+                            type="text"
+                            placeholder="Find a city..."
+                            className="block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-lg leading-snug bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-obsidian focus:border-obsidian text-lg transition duration-150 ease-in-out"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div className="mb-12">
-            <div className={cn("mb-6 border-l-4 pl-4 transition-colors", listBorder)}>
-                <p className="text-lg text-gray-700 font-medium leading-relaxed">{listDesc}</p>
+            <div className="mb-12">
+                <div className={cn("mb-6 border-l-4 pl-4 transition-colors", listBorder)}>
+                    <p className="text-lg text-gray-700 font-medium leading-relaxed">{listDesc}</p>
+                </div>
+
+                {/* Hide Hero Spotlight during search to save space/confusion */}
+                {!searchQuery && <HeroSpotlight activeTab={activeTab} data={displayData} />}
+
+                <TrendTable data={displayData} activeTab={activeTab} />
             </div>
-
-            {/* Hide Hero Spotlight during search to save space/confusion */}
-            {!searchQuery && <HeroSpotlight activeTab={activeTab} data={displayData} />}
-
-            <TrendTable data={displayData} activeTab={activeTab} />
         </div>
-    </div>
-);
+    );
 }
