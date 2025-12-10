@@ -106,7 +106,7 @@ export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: 
                         <th className="px-6 py-4 w-[20%] min-w-[150px]">6 Month Trend</th>
                         <th className="px-6 py-4 text-center w-[15%] min-w-[120px]">{metricHeader}</th>
                         <th className="px-6 py-4 text-right font-mono w-[10%] min-w-[100px]">INDEX</th>
-                        <th className="px-6 py-4 hidden md:table-cell w-[15%]">Key Insight</th>
+                        <th className="px-6 py-4 w-[15%]">Key Insight</th>
                     </tr>
                 </thead>
                 <tbody className="bg-lab-white">
@@ -236,7 +236,7 @@ export function TrendTable({ data, activeTab }: { data: CityTrend[], activeTab: 
                                         {city.indexScore}
                                     </span>
                                 </td>
-                                <td className="px-6 py-5 text-sm text-gray-600 max-w-sm hidden md:table-cell">
+                                <td className="px-6 py-5 text-sm text-gray-600 max-w-sm">
                                     <div className="flex items-center gap-2">
                                         <span className="truncate group-hover:text-gray-900 transition-colors">{city.insight}</span>
                                     </div>
