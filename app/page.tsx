@@ -15,7 +15,9 @@ export default async function Home(props: {
   searchParams: SearchParams
 }) {
   const searchParams = await props.searchParams
-  const activeTab = (searchParams.tab as string) || 'rising';
+  let rawTab = searchParams.tab;
+  if (Array.isArray(rawTab)) rawTab = rawTab[0];
+  const activeTab = (rawTab?.trim() || 'rising');
   const activeRegion = (searchParams.region as string) || null;
 
   // Build Query

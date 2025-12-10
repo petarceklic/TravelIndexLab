@@ -20,7 +20,7 @@ export function TabNavigation() {
         <div className="flex items-center gap-1 sm:gap-6 overflow-x-auto no-scrollbar py-2">
 
             {/* Rising */}
-            <Link href="/?tab=rising" className={cn(
+            <Link href="/?tab=rising" prefetch={false} className={cn(
                 "flex items-center gap-2 px-3 py-2 text-lg font-medium border-b-2 transition-all whitespace-nowrap",
                 currentTab === 'rising'
                     ? "border-signal-emerald text-obsidian"
@@ -31,7 +31,7 @@ export function TabNavigation() {
             </Link>
 
             {/* Softening (was Cooling) */}
-            <Link href="/?tab=cooling" className={cn(
+            <Link href="/?tab=cooling" prefetch={false} className={cn(
                 "flex items-center gap-2 px-3 py-2 text-lg font-medium border-b-2 transition-all whitespace-nowrap",
                 currentTab === 'cooling'
                     ? "border-deep-ocean text-obsidian"
@@ -42,7 +42,7 @@ export function TabNavigation() {
             </Link>
 
             {/* Classic (was Established) */}
-            <Link href="/?tab=established" className={cn(
+            <Link href="/?tab=established" prefetch={false} className={cn(
                 "flex items-center gap-2 px-3 py-2 text-lg font-medium border-b-2 transition-all whitespace-nowrap",
                 currentTab === 'established'
                     ? "border-slate-500 text-obsidian"
@@ -53,7 +53,7 @@ export function TabNavigation() {
             </Link>
 
             {/* Regional Index */}
-            <Link href="/?tab=regions" className={cn(
+            <Link href="/?tab=regions" prefetch={false} className={cn(
                 "flex items-center gap-2 px-3 py-2 text-lg font-medium border-b-2 transition-all whitespace-nowrap",
                 currentTab === 'regions'
                     ? "border-electric-indigo text-electric-indigo"
